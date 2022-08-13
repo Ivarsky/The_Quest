@@ -30,6 +30,10 @@ class EarthEscape:
     def main_loop(self):
         print("in main loop")
         while True:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        return
             pygame.draw.rect(self.screen, (self._SHIP_COLOR), self.space_ship)
             pygame.display.flip()
 
