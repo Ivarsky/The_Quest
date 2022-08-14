@@ -1,8 +1,8 @@
-from curses import KEY_DOWN
 import pygame
 
 SHIP_HEIGHT = 10
 SHIP_WIDTH = 40
+SHIP_COLOR = 255, 255, 255
 
 WIDTH = 1000
 HEIGHT = 800
@@ -16,7 +16,7 @@ class SpaceShip(pygame.Rect):
 
     def __init__(self, x, y):
         super(SpaceShip, self). __init__(x, y, SHIP_WIDTH, SHIP_HEIGHT)
-        self.speed = 1
+        self.speed = 5
 
     def move(self, direction):
         if direction == self.UP:
@@ -33,13 +33,12 @@ class SpaceShip(pygame.Rect):
 
 class EarthEscape:
 
-    _SHIP_COLOR = 255, 255, 255
-
     def __init__(self):
         print("Building object EarthEscape")
         pygame.init()
         self.screen = pygame.display.set_mode(
             (WIDTH, HEIGHT))
+        self.clock = pygame.time.Clock()
 
         self.space_ship = SpaceShip(
             LATERAL_MARGIN,                         # coord x (left)
@@ -64,8 +63,10 @@ class EarthEscape:
             if key_status[pygame.K_DOWN]:
                 self.space_ship.move(SpaceShip.DOWN)
             self.screen.fill((0, 0, 0))
-            pygame.draw.rect(self.screen, (self._SHIP_COLOR), self.space_ship)
+            pygame.draw.rect(self.screen, (SHIP_COLOR), self.space_ship)
+
             pygame.display.flip()
+            self.clock.tick(60)
 
 
 if __name__ == "__main__":
