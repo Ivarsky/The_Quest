@@ -16,19 +16,19 @@ class SpaceShip(pygame.Rect):
 
     def __init__(self, x, y):
         super(SpaceShip, self). __init__(x, y, SHIP_WIDTH, SHIP_HEIGHT)
-        self.velocidad = 5
+        self.speed = 1
 
     def move(self, direction):
         if direction == self.UP:
             print("Moving UP")
-            self.y = self.y - self.velocidad
+            self.y = self.y - self.speed
             if self.y < 0:
                 self.y = 0
         else:
-            self.y = self.y + self.velocidad
-            if self.y > HEIGHT:
-                self.y = HEIGHT - SHIP_HEIGHT
             print("Moving DOWN")
+            self.y = self.y + self.speed
+            if self.y > HEIGHT - SHIP_HEIGHT:
+                self.y = HEIGHT - SHIP_HEIGHT
 
 
 class EarthEscape:
