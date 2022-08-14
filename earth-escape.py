@@ -4,6 +4,10 @@ import pygame
 SHIP_HEIGHT = 10
 SHIP_WIDTH = 40
 
+WIDTH = 1000
+HEIGHT = 800
+LATERAL_MARGIN = 40
+
 
 class SpaceShip(pygame.Rect):
 
@@ -18,16 +22,16 @@ class SpaceShip(pygame.Rect):
         if direction == self.UP:
             print("Moving UP")
             self.y = self.y - self.velocidad
+            if self.y < 0:
+                self.y = 0
         else:
             self.y = self.y + self.velocidad
+            if self.y > HEIGHT:
+                self.y = HEIGHT - SHIP_HEIGHT
             print("Moving DOWN")
 
 
 class EarthEscape:
-
-    _WIDTH = 1000
-    _HEIGHT = 800
-    _LATERAL_MARGIN = 40
 
     _SHIP_COLOR = 255, 255, 255
 
@@ -35,11 +39,11 @@ class EarthEscape:
         print("Building object EarthEscape")
         pygame.init()
         self.screen = pygame.display.set_mode(
-            (self._WIDTH, self._HEIGHT))
+            (WIDTH, HEIGHT))
 
         self.space_ship = SpaceShip(
-            self._LATERAL_MARGIN,                         # coord x (left)
-            (self._HEIGHT-self._LATERAL_MARGIN)/2)        # coord y (top)
+            LATERAL_MARGIN,                         # coord x (left)
+            (HEIGHT-LATERAL_MARGIN)/2)        # coord y (top)
 
     def main_loop(self):
         print("In main loop")
