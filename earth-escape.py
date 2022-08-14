@@ -1,7 +1,7 @@
 import pygame
 
-SHIP_HEIGHT = 10
-SHIP_WIDTH = 40
+SHIP_WIDTH = 20
+SHIP_LENGTH = 60
 SHIP_COLOR = 255, 255, 255
 
 WIDTH = 1000
@@ -15,7 +15,7 @@ class SpaceShip(pygame.Rect):
     DOWN = False
 
     def __init__(self, x, y):
-        super(SpaceShip, self). __init__(x, y, SHIP_WIDTH, SHIP_HEIGHT)
+        super(SpaceShip, self). __init__(x, y, SHIP_LENGTH, SHIP_WIDTH)
         self.speed = 5
 
     def move(self, direction):
@@ -27,8 +27,13 @@ class SpaceShip(pygame.Rect):
         else:
             print("Moving DOWN")
             self.y = self.y + self.speed
-            if self.y > HEIGHT - SHIP_HEIGHT:
-                self.y = HEIGHT - SHIP_HEIGHT
+            if self.y > HEIGHT - SHIP_WIDTH:
+                self.y = HEIGHT - SHIP_WIDTH
+
+
+class Asteroid(pygame.Rect):
+    def __init_(self):
+        super(Asteroid, self).__init__()
 
 
 class EarthEscape:
