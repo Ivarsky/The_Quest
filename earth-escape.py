@@ -32,7 +32,7 @@ class SpaceShip(pygame.Rect):
 
 
 class Asteroid(pygame.Rect):
-    def __init_(self):
+    def __init__(self):
         super(Asteroid, self).__init__()
 
 
