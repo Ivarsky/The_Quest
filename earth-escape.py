@@ -17,7 +17,9 @@ class SpaceShip(pygame.Rect):
     def move(self, direction):
         if direction == self.UP:
             print("Moving UP")
+            self.y = self.y - self.velocidad
         else:
+            self.y = self.y + self.velocidad
             print("Moving DOWN")
 
 
@@ -43,19 +45,21 @@ class EarthEscape:
         print("In main loop")
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        self.space_ship.move(SpaceShip.UP)
-                    elif event.key == pygame.K_DOWN:
-                        self.space_ship.move(SpaceShip.DOWN)
-
-                #    elif event.key == pygame.K_ESCAPE:
+                # if event.type == pygame.KEYDOWN:
+                #    if event.key == pygame.K_ESCAPE:
                 #        print("Exiting")
                 #        return
 
                 if event.type == pygame.QUIT:
                     print("Exiting")
                     return
+
+            key_status = pygame.key.get_pressed()
+            if key_status[pygame.K_UP]:
+                self.space_ship.move(SpaceShip.UP)
+            if key_status[pygame.K_DOWN]:
+                self.space_ship.move(SpaceShip.DOWN)
+            self.screen.fill((0, 0, 0))
             pygame.draw.rect(self.screen, (self._SHIP_COLOR), self.space_ship)
             pygame.display.flip()
 
