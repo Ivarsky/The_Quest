@@ -1,4 +1,6 @@
+from random import randint
 import pygame
+
 
 SHIP_WIDTH = 20
 SHIP_LENGTH = 60
@@ -35,8 +37,12 @@ class SpaceShip(pygame.Rect):
 
 class Asteroid(pygame.Rect):
     def __init__(self):
-        super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE,
-                                       (HEIGHT-ASTEROID_SIZE)/2, ASTEROID_SIZE, ASTEROID_SIZE)
+        super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE, randint(HEIGHT -
+                                                                    (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE), ASTEROID_SIZE, ASTEROID_SIZE)
+        self.speed = 10
+
+    def move(self):
+        self.x = self.x - self.speed
 
 
 class EarthEscape:
@@ -50,7 +56,7 @@ class EarthEscape:
 
         self.space_ship = SpaceShip(
             LATERAL_MARGIN,                         # coord x (left)
-            (HEIGHT-LATERAL_MARGIN)/2)        # coord y (top)
+            (HEIGHT-LATERAL_MARGIN)/2)              # coord y (top)
 
         self.asteroid = Asteroid()
 
@@ -73,6 +79,7 @@ class EarthEscape:
             if key_status[pygame.K_DOWN]:
                 self.space_ship.move(SpaceShip.DOWN)
             self.screen.fill((0, 0, 0))
+            self.asteroid.move()
             pygame.draw.rect(self.screen, (SHIP_COLOR), self.space_ship)
             pygame.draw.rect(self.screen, (255, 255, 255), self.asteroid)
 
