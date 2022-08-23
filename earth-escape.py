@@ -8,6 +8,8 @@ WIDTH = 1000
 HEIGHT = 800
 LATERAL_MARGIN = 40
 
+ASTEROID_SIZE = 25
+
 
 class SpaceShip(pygame.Rect):
 
@@ -33,7 +35,8 @@ class SpaceShip(pygame.Rect):
 
 class Asteroid(pygame.Rect):
     def __init__(self):
-        super(Asteroid, self).__init__()
+        super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE,
+                                       (HEIGHT-ASTEROID_SIZE)/2, ASTEROID_SIZE, ASTEROID_SIZE)
 
 
 class EarthEscape:
@@ -48,6 +51,8 @@ class EarthEscape:
         self.space_ship = SpaceShip(
             LATERAL_MARGIN,                         # coord x (left)
             (HEIGHT-LATERAL_MARGIN)/2)        # coord y (top)
+
+        self.asteroid = Asteroid()
 
     def main_loop(self):
         print("In main loop")
@@ -69,6 +74,7 @@ class EarthEscape:
                 self.space_ship.move(SpaceShip.DOWN)
             self.screen.fill((0, 0, 0))
             pygame.draw.rect(self.screen, (SHIP_COLOR), self.space_ship)
+            pygame.draw.rect(self.screen, (255, 255, 255), self.asteroid)
 
             pygame.display.flip()
             self.clock.tick(60)
