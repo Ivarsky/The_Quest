@@ -39,7 +39,7 @@ class Asteroid(pygame.Rect):
     def __init__(self):
         super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE, randint(HEIGHT -
                                                                     (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE), ASTEROID_SIZE, ASTEROID_SIZE)
-        self.speed = 10
+        self.speed = 7
 
     def move(self):
         self.x = self.x - self.speed
