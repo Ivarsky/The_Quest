@@ -44,6 +44,10 @@ class Asteroid(pygame.Rect):
     def move(self):
         self.x = self.x - self.speed
 
+    def update(self):
+        self.x = WIDTH
+        self.y = randint(HEIGHT - (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE)
+
 
 class EarthEscape:
 
@@ -80,6 +84,9 @@ class EarthEscape:
                 self.space_ship.move(SpaceShip.DOWN)
             self.screen.fill((0, 0, 0))
             self.asteroid.move()
+            if self.asteroid.x <= 0:
+                self.asteroid.update()
+
             pygame.draw.rect(self.screen, (SHIP_COLOR), self.space_ship)
             pygame.draw.rect(self.screen, (255, 255, 255), self.asteroid)
 
