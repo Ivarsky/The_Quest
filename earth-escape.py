@@ -18,12 +18,21 @@ C_WHITE = (255, 255, 255)
 WIN_SCORE = 3
 
 
+class HullPoints:
+    """
+    Guarda los puntos de vida de la nave y los pinta
+    """
+
+    def __init__(self):
+        self.points = MAX_HULL_HITPOINTS
+
+
 class SpaceShip(pygame.Rect):
 
     UP = True
     DOWN = False
 
-    hull_damage = 0
+    hull_damage = HullPoints()
 
     def __init__(self, x, y):
         super(SpaceShip, self). __init__(x, y, SHIP_LENGTH, SHIP_WIDTH)
@@ -44,7 +53,7 @@ class SpaceShip(pygame.Rect):
                 self.y = HEIGHT - SHIP_WIDTH
 
     def hit_hull(self):
-        self.hull_damage += 1
+        self.hull_damage.points -= 1
 
 
 class Asteroid(pygame.Rect):
@@ -61,9 +70,18 @@ class Asteroid(pygame.Rect):
         self.y = randint(HEIGHT - (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE)
 
 
+class Score:
+    """
+    guarda la puntuacion y la pinta
+    """
+
+    def __init__(self):
+        self.points = 0
+
+
 class EarthEscape:
 
-    points = 0
+    score = Score()
 
     def __init__(self):
         print("Building object EarthEscape")
@@ -85,13 +103,15 @@ class EarthEscape:
         if pygame.Rect.colliderect(self.asteroid, self.space_ship):
             self.asteroid.reset()
             self.space_ship.hit_hull()
-            print("Collision!")
+            print(
+                f"Collision! {self.space_ship.hull_damage.points} hull points left!")
 
-    def score(self):
+    def add_score(self):
         """
-        Marcador
+        Marca punto
         """
-        self.points += 1
+        self.score.points += 1
+        print(f"{self.score.points} Asteroids dodged!")
 
     def main_loop(self):
         print("In main loop")
@@ -116,10 +136,10 @@ class EarthEscape:
             self.collide()
             if self.asteroid.x <= 0:
                 self.asteroid.reset()
-                self.score()
-            if self.points == WIN_SCORE:
+                self.add_score()
+            if self.score.points == WIN_SCORE:
                 print("WIN!")
-            if self.space_ship.hull_damage == MAX_HULL_HITPOINTS:
+            if self.space_ship.hull_damage.points == 0:
                 print("Ship Destroyed!, GAME OVER")
 
             pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
