@@ -24,7 +24,7 @@ class HullPoints:
     """
 
     def __init__(self):
-        self.points = MAX_HULL_HITPOINTS
+        self.points = 0
 
 
 class SpaceShip(pygame.Rect):
@@ -53,7 +53,7 @@ class SpaceShip(pygame.Rect):
                 self.y = HEIGHT - SHIP_WIDTH
 
     def hit_hull(self):
-        self.hull_damage.points -= 1
+        self.hull_damage.points += 1
 
 
 class Asteroid(pygame.Rect):
@@ -104,7 +104,7 @@ class EarthEscape:
             self.asteroid.reset()
             self.space_ship.hit_hull()
             print(
-                f"Collision! {self.space_ship.hull_damage.points} hull points left!")
+                f"Collision! {MAX_HULL_HITPOINTS - self.space_ship.hull_damage.points} hull points left!")
 
     def add_score(self):
         """
@@ -139,7 +139,7 @@ class EarthEscape:
                 self.add_score()
             if self.score.points == WIN_SCORE:
                 print("WIN!")
-            if self.space_ship.hull_damage.points == 0:
+            if self.space_ship.hull_damage.points == MAX_HULL_HITPOINTS:
                 print("Ship Destroyed!, GAME OVER")
 
             pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
