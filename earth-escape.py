@@ -7,6 +7,7 @@ HEIGHT = 800
 SHIP_WIDTH = 20
 SHIP_LENGTH = 60
 LATERAL_MARGIN = 40
+MAX_HULL_HITPOINTS = 3
 
 ASTEROID_SIZE = 25
 ASTEROID_SPEED = 7
@@ -14,11 +15,15 @@ ASTEROID_SPEED = 7
 C_BLACK = (0, 0, 0)
 C_WHITE = (255, 255, 255)
 
+WIN_SCORE = 3
+
 
 class SpaceShip(pygame.Rect):
 
     UP = True
     DOWN = False
+
+    hull_damage = 0
 
     def __init__(self, x, y):
         super(SpaceShip, self). __init__(x, y, SHIP_LENGTH, SHIP_WIDTH)
@@ -37,6 +42,9 @@ class SpaceShip(pygame.Rect):
             self.y = self.y + self.speed
             if self.y > HEIGHT - SHIP_WIDTH:
                 self.y = HEIGHT - SHIP_WIDTH
+
+    def hit_hull(self):
+        self.hull_damage += 1
 
 
 class Asteroid(pygame.Rect):
@@ -76,6 +84,7 @@ class EarthEscape:
         """
         if pygame.Rect.colliderect(self.asteroid, self.space_ship):
             self.asteroid.reset()
+            self.space_ship.hit_hull()
             print("Collision!")
 
     def score(self):
@@ -108,8 +117,10 @@ class EarthEscape:
             if self.asteroid.x <= 0:
                 self.asteroid.reset()
                 self.score()
-            if self.points == 3:
+            if self.points == WIN_SCORE:
                 print("WIN!")
+            if self.space_ship.hull_damage == MAX_HULL_HITPOINTS:
+                print("Ship Destroyed!, GAME OVER")
 
             pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
             pygame.draw.rect(self.screen, C_WHITE, self.asteroid)
