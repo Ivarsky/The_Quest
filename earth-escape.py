@@ -70,18 +70,34 @@ class Asteroid(pygame.Rect):
         self.y = randint(HEIGHT - (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE)
 
 
-class Score:
+class Scoreboard:
     """
     guarda la puntuacion y la pinta
     """
 
     def __init__(self):
+        self.initialize()
+
+    def check_win_condition(self):
+        if self.points == WIN_SCORE:
+            self.win = True
+            print("WIN!")
+
+    def add_score(self):
+        """
+        Marca punto
+        """
+        self.points += 1
+        print(f"{self.points} Asteroids dodged!")
+
+    def initialize(self):
         self.points = 0
+        self.win = False
 
 
 class EarthEscape:
 
-    score = Score()
+    score = Scoreboard()
 
     def __init__(self):
         print("Building object EarthEscape")
@@ -103,15 +119,11 @@ class EarthEscape:
         if pygame.Rect.colliderect(self.asteroid, self.space_ship):
             self.asteroid.reset()
             self.space_ship.hit_hull()
-            print(
-                f"Collision! {MAX_HULL_HITPOINTS - self.space_ship.hull_damage.points} hull points left!")
-
-    def add_score(self):
-        """
-        Marca punto
-        """
-        self.score.points += 1
-        print(f"{self.score.points} Asteroids dodged!")
+            if self.space_ship.hull_damage.points == MAX_HULL_HITPOINTS:
+                print("Ship Destroyed!, GAME OVER")
+            else:
+                print(
+                    f"Collision! {MAX_HULL_HITPOINTS - self.space_ship.hull_damage.points} hull points left!")
 
     def main_loop(self):
         print("In main loop")
@@ -132,15 +144,13 @@ class EarthEscape:
             if key_status[pygame.K_DOWN]:
                 self.space_ship.move(SpaceShip.DOWN)
             self.screen.fill(C_BLACK)
-            self.asteroid.move()
+            if self.score.win == False:
+                self.asteroid.move()
             self.collide()
             if self.asteroid.x <= 0:
+                self.score.add_score()
+                self.score.check_win_condition()
                 self.asteroid.reset()
-                self.add_score()
-            if self.score.points == WIN_SCORE:
-                print("WIN!")
-            if self.space_ship.hull_damage.points == MAX_HULL_HITPOINTS:
-                print("Ship Destroyed!, GAME OVER")
 
             pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
             pygame.draw.rect(self.screen, C_WHITE, self.asteroid)
