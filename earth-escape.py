@@ -11,6 +11,7 @@ HEIGHT = 800
 LATERAL_MARGIN = 40
 
 ASTEROID_SIZE = 25
+ASTEROIDE_SPEED = 7
 
 
 class SpaceShip(pygame.Rect):
@@ -23,6 +24,10 @@ class SpaceShip(pygame.Rect):
         self.speed = 5
 
     def move(self, direction):
+        """
+        Mueve la nave arriba o abajo según que tecla se pulse
+        """
+
         if direction == self.UP:
             self.y = self.y - self.speed
             if self.y < 0:
@@ -37,10 +42,9 @@ class Asteroid(pygame.Rect):
     def __init__(self):
         super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE, randint(HEIGHT -
                                                                     (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE), ASTEROID_SIZE, ASTEROID_SIZE)
-        self.speed = 7
 
     def move(self):
-        self.x = self.x - self.speed
+        self.x = self.x - ASTEROIDE_SPEED
 
     # Resetea la posicion del asteroide al borde de la pantalla a altura aleatoria
     def reset(self):
