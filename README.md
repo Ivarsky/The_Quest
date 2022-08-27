@@ -29,3 +29,10 @@ Para arrancar el juego basta con ejecutar desde la línea de comandos:
 ```
 earth-escape.py
 ```
+## Cómo jugar
+
+- Mueve la nave con las teclas FLECHA ARRIBA y FLECHA ABAJO para mover la nave y esquivar asteroides
+- Una vez esquivado un determinado numero de asteroides pasas de pantalla
+- Si los asteroides golpean la nave 3 veces la nave se destruye y se pierde la partida
+- Al llegar a Nueva Tierra ganas la partida
+- La tecla R inicia una nueva partida
