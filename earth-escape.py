@@ -24,12 +24,10 @@ class SpaceShip(pygame.Rect):
 
     def move(self, direction):
         if direction == self.UP:
-            print("Moving UP")
             self.y = self.y - self.speed
             if self.y < 0:
                 self.y = 0
         else:
-            print("Moving DOWN")
             self.y = self.y + self.speed
             if self.y > HEIGHT - SHIP_WIDTH:
                 self.y = HEIGHT - SHIP_WIDTH
@@ -44,7 +42,8 @@ class Asteroid(pygame.Rect):
     def move(self):
         self.x = self.x - self.speed
 
-    def update(self):
+    # Resetea la posicion del asteroide al borde de la pantalla a altura aleatoria
+    def reset(self):
         self.x = WIDTH
         self.y = randint(HEIGHT - (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE)
 
@@ -84,14 +83,23 @@ class EarthEscape:
                 self.space_ship.move(SpaceShip.DOWN)
             self.screen.fill((0, 0, 0))
             self.asteroid.move()
+            self.collide()
             if self.asteroid.x <= 0:
-                self.asteroid.update()
+                self.asteroid.reset()
 
             pygame.draw.rect(self.screen, (SHIP_COLOR), self.space_ship)
             pygame.draw.rect(self.screen, (255, 255, 255), self.asteroid)
 
             pygame.display.flip()
             self.clock.tick(60)
+
+    def collide(self):
+        """
+        Comprueba si el asteroide colisiona con la nave y resetea la posición del asteroide y resta un punto de vida
+        """
+        if pygame.Rect.colliderect(self.asteroid, self.space_ship):
+            self.asteroid.reset()
+            print("Collision!")
 
 
 if __name__ == "__main__":
