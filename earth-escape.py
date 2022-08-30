@@ -118,6 +118,10 @@ class EarthEscape:
             (WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
 
+        # Preparacion para pintar texto
+        pygame.font.init()
+        self.typography = pygame.font.SysFont('urwbookman', 50)
+
         self.space_ship = SpaceShip(
             LATERAL_MARGIN,                         # coord x (left)
             (HEIGHT-LATERAL_MARGIN)/2)              # coord y (top)
@@ -136,6 +140,12 @@ class EarthEscape:
 
     def main_loop(self):
         print("In main loop")
+
+        text = pygame.font.Font.render(
+            self.typography, 'Como mola EARTH-ESCAPE', True, (100, 0, 0))
+        text_x = WIDTH/2 - text.get_width()/2
+        text_y = HEIGHT/2 - text.get_height()/2
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -155,7 +165,7 @@ class EarthEscape:
                 self.space_ship.move(SpaceShip.UP)
             if key_status[pygame.K_DOWN]:
                 self.space_ship.move(SpaceShip.DOWN)
-            self.screen.fill(C_BLACK)
+
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
                 self.asteroid.move()
                 self.collide()
@@ -163,6 +173,9 @@ class EarthEscape:
                 self.score.add_score()
                 self.score.check_win_condition()
                 self.asteroid.reset()
+
+            self.screen.fill(C_BLACK)
+            self.screen.blit(text, (text_x, text_y))
             if not self.space_ship.hull_damage.destroyed:
                 pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
             pygame.draw.rect(self.screen, C_WHITE, self.asteroid)
