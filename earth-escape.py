@@ -25,6 +25,8 @@ class HullPoints:
 
     def __init__(self):
         self.initialize()
+        pygame.font.init()
+        self.typography = pygame.font.SysFont('urwbookman', 50)
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
@@ -37,6 +39,13 @@ class HullPoints:
     def initialize(self):
         self.points = 0
         self.destroyed = False
+
+    def draw(self, screen):
+        text = pygame.font.Font.render(
+            self.typography, str(self.points), False, C_WHITE)
+        pos_x = (WIDTH - text.get_width())/4
+        pos_y = LATERAL_MARGIN
+        pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
 class SpaceShip(pygame.Rect):
@@ -89,6 +98,8 @@ class Scoreboard:
 
     def __init__(self):
         self.initialize()
+        pygame.font.init()
+        self.typography = pygame.font.SysFont('urwbookman', 50)
 
     def check_win_condition(self):
         if self.points == WIN_SCORE:
@@ -106,6 +117,13 @@ class Scoreboard:
         self.points = 0
         self.win = False
 
+    def draw(self, screen):
+        text = pygame.font.Font.render(
+            self.typography, str(self.points), False, C_WHITE)
+        pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
+        pos_y = LATERAL_MARGIN
+        pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
 
 class EarthEscape:
 
@@ -119,8 +137,6 @@ class EarthEscape:
         self.clock = pygame.time.Clock()
 
         # Preparacion para pintar texto
-        pygame.font.init()
-        self.typography = pygame.font.SysFont('urwbookman', 50)
 
         self.space_ship = SpaceShip(
             LATERAL_MARGIN,                         # coord x (left)
@@ -173,6 +189,10 @@ class EarthEscape:
             if not self.space_ship.hull_damage.destroyed:
                 pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
             pygame.draw.rect(self.screen, C_WHITE, self.asteroid)
+            # dibuja los puntos para ganar (asteroides esquivados)
+            self.score.draw(self.screen)
+            # dibuja los puntos para perder (golpes a la nave)
+            self.space_ship.hull_damage.draw(self.screen)
 
             pygame.display.flip()
             self.clock.tick(60)
