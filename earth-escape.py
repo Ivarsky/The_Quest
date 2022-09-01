@@ -27,6 +27,7 @@ class HullPoints:
         self.initialize()
         pygame.font.init()
         self.typography = pygame.font.SysFont('urwbookman', 50)
+        self.typography_endgame = pygame.font.SysFont('urwbookman', 100)
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
@@ -42,10 +43,17 @@ class HullPoints:
 
     def draw(self, screen):
         text = pygame.font.Font.render(
-            self.typography, str(self.points), False, C_WHITE)
+            self.typography, str(self.points), True, C_WHITE)
         pos_x = (WIDTH - text.get_width())/4
         pos_y = LATERAL_MARGIN
         pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
+        if self.destroyed == True:
+            text = pygame.font.Font.render(
+                self.typography_endgame, "Game Over", True, C_WHITE)
+            pos_x = (WIDTH - text.get_width())/2
+            pos_y = (HEIGHT - text.get_height())/2
+            pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
 class SpaceShip(pygame.Rect):
@@ -100,6 +108,7 @@ class Scoreboard:
         self.initialize()
         pygame.font.init()
         self.typography = pygame.font.SysFont('urwbookman', 50)
+        self.typography_endgame = pygame.font.SysFont('urwbookman', 100)
 
     def check_win_condition(self):
         if self.points == WIN_SCORE:
@@ -119,10 +128,17 @@ class Scoreboard:
 
     def draw(self, screen):
         text = pygame.font.Font.render(
-            self.typography, str(self.points), False, C_WHITE)
+            self.typography, str(self.points), True, C_WHITE)
         pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
         pos_y = LATERAL_MARGIN
         pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
+        if self.win == True:
+            text = pygame.font.Font.render(
+                self.typography_endgame, "You Win!", True, C_WHITE)
+            pos_x = (WIDTH - text.get_width())/2
+            pos_y = (HEIGHT - text.get_height())/2
+            pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
 class EarthEscape:
