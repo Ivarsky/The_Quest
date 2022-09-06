@@ -1,4 +1,5 @@
-import TheQuest.game
-
+import The_quest
+from The_quest.game import TheQuest
 if __name__ == "__main__":
-    pass
+    print("From main")
+    TheQuest()
