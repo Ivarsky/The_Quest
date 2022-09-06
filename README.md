@@ -1,4 +1,4 @@
-# earth-escape
+# the_quest
 
 Juego en pygame sobre una nave que huye de una Tierra moribunda, en busca de un nuevo planeta que colonizar
 
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 Para arrancar el juego basta con ejecutar desde la línea de comandos:
 
 ```
-earth-escape.py
+main.py
 ```
 ## Cómo jugar
 
