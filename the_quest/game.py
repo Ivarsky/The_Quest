@@ -1,6 +1,6 @@
 from the_quest import *
 from random import randint
-import pygame
+import pygame as pg
 
 
 class HullPoints:
@@ -10,9 +10,9 @@ class HullPoints:
 
     def __init__(self):
         self.initialize()
-        pygame.font.init()
-        self.typography = pygame.font.SysFont('urwbookman', 50)
-        self.typography_endgame = pygame.font.SysFont('urwbookman', 100)
+        pg.font.init()
+        self.typography = pg.font.SysFont('urwbookman', 50)
+        self.typography_endgame = pg.font.SysFont('urwbookman', 100)
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
@@ -27,21 +27,21 @@ class HullPoints:
         self.destroyed = False
 
     def draw(self, screen):
-        text = pygame.font.Font.render(
+        text = pg.font.Font.render(
             self.typography, str(self.points), True, C_WHITE)
         pos_x = (WIDTH - text.get_width())/4
         pos_y = LATERAL_MARGIN
-        pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+        pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
         if self.destroyed == True:
-            text = pygame.font.Font.render(
+            text = pg.font.Font.render(
                 self.typography_endgame, "Game Over", True, C_WHITE)
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
-            pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+            pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
-class SpaceShip(pygame.Rect):
+class SpaceShip(pg.Rect):
 
     UP = True
     DOWN = False
@@ -70,7 +70,7 @@ class SpaceShip(pygame.Rect):
         self.hull_damage.points += 1
 
 
-class Asteroid(pygame.Rect):
+class Asteroid(pg.Rect):
     def __init__(self):
         super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE, randint(HEIGHT -
                                                                     (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE), ASTEROID_SIZE, ASTEROID_SIZE)
@@ -91,9 +91,9 @@ class Scoreboard:
 
     def __init__(self):
         self.initialize()
-        pygame.font.init()
-        self.typography = pygame.font.SysFont('urwbookman', 50)
-        self.typography_endgame = pygame.font.SysFont('urwbookman', 100)
+        pg.font.init()
+        self.typography = pg.font.SysFont('urwbookman', 50)
+        self.typography_endgame = pg.font.SysFont('urwbookman', 100)
 
     def check_win_condition(self):
         if self.points == WIN_SCORE:
@@ -112,18 +112,18 @@ class Scoreboard:
         self.win = False
 
     def draw(self, screen):
-        text = pygame.font.Font.render(
+        text = pg.font.Font.render(
             self.typography, str(self.points), True, C_WHITE)
         pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
         pos_y = LATERAL_MARGIN
-        pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+        pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
         if self.win == True:
-            text = pygame.font.Font.render(
+            text = pg.font.Font.render(
                 self.typography_endgame, "You Win!", True, C_WHITE)
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
-            pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
+            pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
 class TheQuest:
@@ -132,10 +132,10 @@ class TheQuest:
 
     def __init__(self):
         print("Building object EarthEscape")
-        pygame.init()
-        self.screen = pygame.display.set_mode(
+        pg.init()
+        self.screen = pg.display.set_mode(
             (WIDTH, HEIGHT))
-        self.clock = pygame.time.Clock()
+        self.clock = pg.time.Clock()
 
         # Preparacion para pintar texto
 
@@ -149,7 +149,7 @@ class TheQuest:
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
         """
-        if pygame.Rect.colliderect(self.asteroid, self.space_ship):
+        if pg.Rect.colliderect(self.asteroid, self.space_ship):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
             if not self.space_ship.hull_damage.destroyed:
@@ -159,23 +159,23 @@ class TheQuest:
         print("In main loop")
 
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    #    if event.key == pygame.K_ESCAPE:
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    #    if event.key == pg.K_ESCAPE:
                     #        print("Exiting")
                     #        return
-                    if event.key == pygame.K_r:
+                    if event.key == pg.K_r:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
 
-                if event.type == pygame.QUIT:
+                if event.type == pg.QUIT:
                     print("Exiting")
                     return
 
-            key_status = pygame.key.get_pressed()
-            if key_status[pygame.K_UP]:
+            key_status = pg.key.get_pressed()
+            if key_status[pg.K_UP]:
                 self.space_ship.move(SpaceShip.UP)
-            if key_status[pygame.K_DOWN]:
+            if key_status[pg.K_DOWN]:
                 self.space_ship.move(SpaceShip.DOWN)
 
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
@@ -188,14 +188,14 @@ class TheQuest:
 
             self.screen.fill(C_BLACK)
             if not self.space_ship.hull_damage.destroyed:
-                pygame.draw.rect(self.screen, C_WHITE, self.space_ship)
-            pygame.draw.rect(self.screen, C_WHITE, self.asteroid)
+                pg.draw.rect(self.screen, C_WHITE, self.space_ship)
+            pg.draw.rect(self.screen, C_WHITE, self.asteroid)
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.screen)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.screen)
 
-            pygame.display.flip()
+            pg.display.flip()
             self.clock.tick(60)
 
 
