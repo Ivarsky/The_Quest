@@ -141,7 +141,7 @@ class Scoreboard:
             pygame.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
-class TheQuest:
+class EarthEscape:
 
     score = Scoreboard()
 
@@ -215,5 +215,5 @@ class TheQuest:
 
 
 if __name__ == "__main__":
-    game = TheQuest()
+    game = EarthEscape()
     game.main_loop()
