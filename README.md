@@ -77,7 +77,7 @@ source ./env/bin/activate
 
 4. instalar dependencias
 ```
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 5. Abre el codigo en IDE favorito
