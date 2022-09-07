@@ -88,12 +88,10 @@ code .
 
 # Atribuciones
 
-El Artwork está creado por Luis Zuno
+El Artwork está creado por Luis Zuno (@ansimuz)
 
 ## Links a sus redes
 
-Twitter: @ansimuz
+Twitter: https://twitter.com/ansimuz
 
-Patreon: https://www.patreon.com/ansimuz
-
-Tienda: https://ansimuz.itch.io/
+LinkTree: https://linktr.ee/ansimuz
