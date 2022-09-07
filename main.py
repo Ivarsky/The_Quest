@@ -5,4 +5,4 @@ if __name__ == "__main__":
     print("From main")
     print(f"Screen size {HEIGHT}x{WIDTH}")
     game = TheQuest()
-    game.main_loop()
+    game.play()

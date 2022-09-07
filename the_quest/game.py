@@ -1,6 +1,9 @@
-from the_quest import *
-from random import randint
 import pygame as pg
+
+from the_quest import *
+from the_quest.scenes import Front, Game, HallOfFame
+
+from random import randint
 
 
 class HullPoints:
@@ -147,6 +150,12 @@ class TheQuest:
 
         self.asteroid = Asteroid()
 
+        self.scenes = [
+            Front(self.display),
+            Game(self.display),
+            HallOfFame(self.display),
+        ]
+
     def collide(self):
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
@@ -157,7 +166,7 @@ class TheQuest:
             if not self.space_ship.hull_damage.destroyed:
                 self.asteroid.reset()
 
-    def main_loop(self):
+    def play(self):
         print("In main loop")
 
         while True:
@@ -203,4 +212,4 @@ class TheQuest:
 
 if __name__ == "__main__":
     game = TheQuest()
-    game.main_loop()
+    game.play()
