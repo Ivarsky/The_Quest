@@ -1,3 +1,4 @@
+import os
 import pygame as pg
 
 from the_quest import *
@@ -14,7 +15,8 @@ class TheQuest:
         self.display = pg.display.set_mode(
             (WIDTH, HEIGHT))
         pg.display.set_caption("The Quest BZ Ivan version")
-        icon = pg.image.load("resources/player/sprites/player1.png")
+        icon = pg.image.load(os.path.join(
+            "resources", "player", "sprites", "player1.png"))
         pg.display.set_icon(icon)
 
         self.scenes = [

@@ -1,3 +1,4 @@
+import os
 import pygame as pg
 
 from the_quest import *
@@ -5,7 +6,7 @@ from the_quest.objects import Asteroid, Scoreboard, SpaceShip
 
 
 class Scene:
-    def __init__(self, screen):
+    def __init__(self, screen: pg.Surface):
         self.display = screen
 
     def main_loop(self):
@@ -13,6 +14,14 @@ class Scene:
 
 
 class Front(Scene):
+
+    def __init__(self, screen: pg.Surface):
+        super().__init__(screen)
+        image_background = pg.image.load(os.path.join(
+            "resources", "background", "bg-preview-big.png"))
+        self.background = pg.transform.scale2x(image_background)
+        self.clock = pg.time.Clock()
+
     def main_loop(self):
         while True:
             for event in pg.event.get():
@@ -23,7 +32,12 @@ class Front(Scene):
                 if event.type == pg.QUIT:
                     return
             self.display.fill(C_RED)
+            self.draw_background()
             pg.display.flip()
+            self.clock.tick(FPS)
+
+    def draw_background(self):
+        self.display.blit(self.background, (0, 0))
 
 
 class Game(Scene):
