@@ -85,3 +85,15 @@ pip install -r requirements-dev.txt
 # En VS Code
 code .
 ```
+
+# Atribuciones
+
+El Artwork está creado por Luis Zuno
+
+## Links a sus redes
+
+Twitter: @ansimuz
+
+Patreon: https://www.patreon.com/ansimuz
+
+Tienda: https://ansimuz.itch.io/
