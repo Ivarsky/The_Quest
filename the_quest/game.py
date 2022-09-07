@@ -136,9 +136,10 @@ class TheQuest:
         self.display = pg.display.set_mode(
             (WIDTH, HEIGHT))
         pg.display.set_caption("The Quest BZ Ivan version")
-        self.clock = pg.time.Clock()
+        icon = pg.image.load("resources/player/sprites/player1.png")
+        pg.display.set_icon(icon)
 
-        # Preparacion para pintar texto
+        self.clock = pg.time.Clock()
 
         self.space_ship = SpaceShip(
             LATERAL_MARGIN,                         # coord x (left)
