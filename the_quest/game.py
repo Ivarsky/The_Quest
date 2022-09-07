@@ -133,8 +133,9 @@ class TheQuest:
     def __init__(self):
         print("Building object EarthEscape")
         pg.init()
-        self.screen = pg.display.set_mode(
+        self.display = pg.display.set_mode(
             (WIDTH, HEIGHT))
+        pg.display.set_caption("The Quest BZ Ivan version")
         self.clock = pg.time.Clock()
 
         # Preparacion para pintar texto
@@ -186,14 +187,14 @@ class TheQuest:
                 self.score.check_win_condition()
                 self.asteroid.reset()
 
-            self.screen.fill(C_BLACK)
+            self.display.fill(C_BLACK)
             if not self.space_ship.hull_damage.destroyed:
-                pg.draw.rect(self.screen, C_WHITE, self.space_ship)
-            pg.draw.rect(self.screen, C_WHITE, self.asteroid)
+                pg.draw.rect(self.display, C_WHITE, self.space_ship)
+            pg.draw.rect(self.display, C_WHITE, self.asteroid)
             # dibuja los puntos para ganar (asteroides esquivados)
-            self.score.draw(self.screen)
+            self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
-            self.space_ship.hull_damage.draw(self.screen)
+            self.space_ship.hull_damage.draw(self.display)
 
             pg.display.flip()
             self.clock.tick(60)
