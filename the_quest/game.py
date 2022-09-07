@@ -17,8 +17,6 @@ class TheQuest:
         icon = pg.image.load("resources/player/sprites/player1.png")
         pg.display.set_icon(icon)
 
-        self.clock = pg.time.Clock()
-
         self.scenes = [
             Front(self.display),
             Game(self.display),
@@ -26,7 +24,7 @@ class TheQuest:
         ]
 
     def play(self):
-        print("In main loop")
+        print("Game open")
 
         for scene in self.scenes:
             scene.main_loop()

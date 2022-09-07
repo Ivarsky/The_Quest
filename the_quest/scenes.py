@@ -21,7 +21,6 @@ class Front(Scene):
                 #        print("Exiting")
                 #        return
                 if event.type == pg.QUIT:
-                    print("Exiting")
                     return
             self.display.fill(C_RED)
             pg.display.flip()
@@ -50,7 +49,7 @@ class Game(Scene):
                 self.asteroid.reset()
 
     def main_loop(self):
-        print("In main loop")
+        print("Starting game!")
 
         while True:
             for event in pg.event.get():
@@ -63,7 +62,7 @@ class Game(Scene):
                         self.space_ship.hull_damage.initialize()
 
                 if event.type == pg.QUIT:
-                    print("Exiting")
+                    print("Ending game")
                     return
 
             key_status = pg.key.get_pressed()
