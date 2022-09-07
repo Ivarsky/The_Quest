@@ -1,6 +1,7 @@
 import pygame as pg
 
 from the_quest import *
+
 from random import randint
 
 
