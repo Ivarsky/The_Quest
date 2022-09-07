@@ -1,3 +1,6 @@
+import pygame as pg
+from the_quest import *
+
 
 class Scene:
     def __init__(self, display):
