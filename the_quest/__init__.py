@@ -14,5 +14,7 @@ C_BLACK = (0, 0, 0)
 C_WHITE = (255, 255, 255)
 C_RED = (99, 00, 00)
 C_GREEN = (00, 00, 99)
+C_YELLOW = (255, 255, 0)
+
 
 WIN_SCORE = 3

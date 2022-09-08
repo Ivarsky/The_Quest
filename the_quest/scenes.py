@@ -21,6 +21,8 @@ class Front(Scene):
         image_background = pg.image.load(os.path.join(
             "resources", "background", "bg-preview-big.png"))
         self.background = pg.transform.scale2x(image_background)
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography = pg.font.Font(font_file, 100)
         self.clock = pg.time.Clock()
 
     def main_loop(self):
@@ -34,11 +36,20 @@ class Front(Scene):
                     return
             self.display.fill(C_RED)
             self.draw_background()
+            self.draw_text()
             pg.display.flip()
             self.clock.tick(FPS)
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
+
+    def draw_text(self):
+        title = "The Quest"
+        text = pg.font.Font.render(self.typography, title, True, C_YELLOW)
+        text_width = text.get_width()
+        pos_x = (WIDTH-text_width)/2
+        pos_y = 0.15 * HEIGHT
+        self.display.blit(text, (pos_x, pos_y))
 
 
 class Game(Scene):
