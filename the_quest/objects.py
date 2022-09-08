@@ -1,3 +1,5 @@
+import os
+
 import pygame as pg
 
 from the_quest import *
@@ -13,8 +15,9 @@ class HullPoints:
     def __init__(self):
         self.initialize()
         pg.font.init()
-        self.typography = pg.font.SysFont('urwbookman', 50)
-        self.typography_endgame = pg.font.SysFont('urwbookman', 100)
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography = pg.font.Font(font_file, 50)
+        self.typography_endgame = pg.font.Font(font_file, 100)
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
@@ -94,8 +97,9 @@ class Scoreboard:
     def __init__(self):
         self.initialize()
         pg.font.init()
-        self.typography = pg.font.SysFont('urwbookman', 50)
-        self.typography_endgame = pg.font.SysFont('urwbookman', 100)
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography = pg.font.Font(font_file, 50)
+        self.typography_endgame = pg.font.Font(font_file, 50)
 
     def check_win_condition(self):
         if self.points == WIN_SCORE:
