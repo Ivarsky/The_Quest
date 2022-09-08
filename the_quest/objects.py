@@ -2,7 +2,7 @@ import os
 
 import pygame as pg
 
-from the_quest import *
+from . import *
 
 from random import randint
 
@@ -51,11 +51,10 @@ class SpaceShip(pg.Rect):
     UP = True
     DOWN = False
 
-    hull_damage = HullPoints()
-
     def __init__(self, x, y):
         super(SpaceShip, self). __init__(x, y, SHIP_LENGTH, SHIP_WIDTH)
         self.speed = 5
+        self.hull_damage = HullPoints()
 
     def move(self, direction):
         """
