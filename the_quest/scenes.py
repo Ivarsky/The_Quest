@@ -21,34 +21,57 @@ class Front(Scene):
         image_background = pg.image.load(os.path.join(
             "resources", "background", "bg-preview-big.png"))
         self.background = pg.transform.scale2x(image_background)
-        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
-        self.typography = pg.font.Font(font_file, 100)
+        self.font_file = os.path.join(
+            "resources", "fonts", "PublicPixel-z84yD.ttf")
         self.clock = pg.time.Clock()
 
     def main_loop(self):
         while True:
             for event in pg.event.get():
-                # if event.type == pg.KEYDOWN:
-                #    if event.key == pg.K_ESCAPE:
-                #        print("Exiting")
-                #        return
+                if event.type == pg.KEYDOWN:
+                    #    if event.key == pg.K_ESCAPE:
+                    #        print("Exiting")
+                    #        return
+                    if event.key == pg.K_SPACE:
+                        return
                 if event.type == pg.QUIT:
                     return
             self.display.fill(C_RED)
             self.draw_background()
-            self.draw_text()
+            self.draw_title()
+            self.draw_text1()
+            self.draw_text2()
             pg.display.flip()
             self.clock.tick(FPS)
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
 
-    def draw_text(self):
-        title = "The Quest"
-        text = pg.font.Font.render(self.typography, title, True, C_YELLOW)
+    def draw_title(self):
+        typography = pg.font.Font(self.font_file, 100)
+        message = "The Quest"
+        text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
         pos_y = 0.15 * HEIGHT
+        self.display.blit(text, (pos_x, pos_y))
+
+    def draw_text1(self):
+        typography = pg.font.Font(self.font_file, 16)
+        message = "¡Usa flecha arriba y abajo para esquivar los obstáculos!"
+        text = pg.font.Font.render(typography, message, True, C_YELLOW)
+        text_width = text.get_width()
+        pos_x = (WIDTH-text_width)/2
+        pos_y = 0.50 * HEIGHT
+        self.display.blit(text, (pos_x, pos_y))
+
+    def draw_text2(self):
+        typography = pg.font.Font(self.font_file, 16)
+        message = "Pulsa Espacio para empezar a jugar"
+        text = pg.font.Font.render(typography, message, True, C_YELLOW)
+        text_width = text.get_width()
+        pos_x = (WIDTH-text_width)/2
+        pos_y = 0.75 * HEIGHT
         self.display.blit(text, (pos_x, pos_y))
 
 
