@@ -35,7 +35,8 @@ class Front(Scene):
                     if event.key == pg.K_SPACE:
                         return
                 if event.type == pg.QUIT:
-                    return
+                    print("Exiting!")
+                    pg.quit()
             self.display.fill(C_RED)
             self.draw_background()
             self.draw_title()
@@ -111,8 +112,8 @@ class Game(Scene):
                         self.space_ship.hull_damage.initialize()
 
                 if event.type == pg.QUIT:
-                    print("Ending game")
-                    return
+                    print("Exiting")
+                    pg.quit()
 
             key_status = pg.key.get_pressed()
             if key_status[pg.K_UP]:
@@ -151,6 +152,6 @@ class HallOfFame(Scene):
                 #        return
                 if event.type == pg.QUIT:
                     print("Exiting")
-                    return
+                    pg.quit()
             self.display.fill(C_GREEN)
             pg.display.flip()
