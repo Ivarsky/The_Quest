@@ -63,15 +63,18 @@ class SpaceshipSprite(Sprite):
 
 class SpaceShip(Sprite):
 
-    UP = True
-    DOWN = False
-
     def __init__(self):
         super(). __init__()
-        image_path = os.path.join(
+        self.image_path_straight = os.path.join(
             "resources", "player", "sprites", "player1.png")
-        self.image = pg.image.load(image_path)
-        self.centerx = LATERAL_MARGIN
+        self.image_path_down = os.path.join(
+            "resources", "player", "sprites", "player2.png")
+        self.image_path_up = os.path.join(
+            "resources", "player", "sprites", "player3.png")
+
+        self.image = pg.transform.scale2x(
+            pg.image.load(self.image_path_straight))
+        self.centerx = LATERAL_MARGIN*2
         self.centery = HEIGHT/2
         self.rect = self.image.get_rect(
             centerx=self.centerx, centery=self.centery)
@@ -82,13 +85,21 @@ class SpaceShip(Sprite):
         key_status = pg.key.get_pressed()
         if key_status[pg.K_UP]:
             self.rect.y -= self.speed
+            self.image = pg.transform.scale2x(
+                pg.image.load(self.image_path_up))
             if self.rect.top < 0:
                 self.rect.top = 0
 
-        if key_status[pg.K_DOWN]:
+        elif key_status[pg.K_DOWN]:
             self.rect.y += self.speed
+            self.image = pg.transform.scale2x(pg.image.load(
+                self.image_path_down))
             if self.rect.bottom > HEIGHT:
                 self.rect.bottom = HEIGHT
+
+        else:
+            self.image = pg.transform.scale2x(pg.image.load(
+                self.image_path_straight))
 
     def hit_hull(self):
         self.hull_damage.points += 1
