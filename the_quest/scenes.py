@@ -87,6 +87,12 @@ class Game(Scene):
         self.clock = pg.time.Clock()
         self.asteroid = Asteroid()
         self.score = Scoreboard()
+        image_background = pg.image.load(os.path.join(
+            "resources", "background", "bg-preview-big.png"))
+        self.background = pg.transform.scale2x(image_background)
+
+    def draw_background(self):
+        self.display.blit(self.background, (0, 0))
 
     def collide(self):
         """
@@ -129,9 +135,13 @@ class Game(Scene):
                 self.score.check_win_condition()
                 self.asteroid.reset()
 
-            self.display.fill(C_BLACK)
+            # self.display.fill(C_BLACK)   <---- DELETE
+            # dibuja el fondo
+            self.draw_background()
+            # dibuja la nave
             if not self.space_ship.hull_damage.destroyed:
                 pg.draw.rect(self.display, C_WHITE, self.space_ship)
+            # dibuja los asteroides
             pg.draw.rect(self.display, C_WHITE, self.asteroid)
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
