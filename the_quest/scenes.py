@@ -96,11 +96,11 @@ class Game(Scene):
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
         """
-        if pg.Rect.colliderect(self.asteroid, self.space_ship):
+        if pg.Rect.colliderect(self.asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
             if not self.space_ship.hull_damage.destroyed:
-                self.asteroid.reset()
+                self.asteroid.update()
 
     def main_loop(self):
         print("Starting game!")
@@ -120,12 +120,11 @@ class Game(Scene):
                     pg.quit()
 
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
-                self.asteroid.move()
+                self.asteroid.update()
                 self.collide()
-            if self.asteroid.x <= 0:
+            if self.asteroid.rect.x <= 0:
                 self.score.add_score()
                 self.score.check_win_condition()
-                self.asteroid.reset()
 
             # self.display.fill(C_BLACK)   <---- DELETE
             # dibuja el fondo
@@ -135,7 +134,7 @@ class Game(Scene):
                 self.space_ship.update()
                 self.display.blit(self.space_ship.image, self.space_ship.rect)
             # dibuja los asteroides
-            pg.draw.rect(self.display, C_WHITE, self.asteroid)
+            self.display.blit(self.asteroid.image, self.asteroid.rect)
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)

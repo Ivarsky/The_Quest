@@ -47,20 +47,6 @@ class HullPoints:
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
 
-"""
-class SpaceshipSprite(Sprite):
-    def __init__(self, ):
-        super().__init__()
-        image_path = os.path.join(
-            "resources", "player", "sprites", "player1.png")
-        self.image = pg.image.load(image_path)
-        self.rect = self.image.get_rect(centerx=(WIDTH-(WIDTH-LATERAL_MARGIN)))
-
-    def update(self):
-        pass
-"""
-
-
 class SpaceShip(Sprite):
 
     def __init__(self):
@@ -105,18 +91,21 @@ class SpaceShip(Sprite):
         self.hull_damage.points += 1
 
 
-class Asteroid(pg.Rect):
+class Asteroid(Sprite):
     def __init__(self):
-        super(Asteroid, self).__init__(WIDTH-ASTEROID_SIZE, randint(HEIGHT -
-                                                                    (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE), ASTEROID_SIZE, ASTEROID_SIZE)
+        super().__init__()
+        image_path = os.path.join("resources", "asteroids", "asteroid.png")
+        self.image = pg.image.load(image_path)
+        self.centerx = WIDTH
+        self.centery = randint(0, HEIGHT)
+        self.rect = self.image.get_rect(
+            centerx=self.centerx, centery=self.centery)
 
-    def move(self):
-        self.x = self.x - ASTEROID_SPEED
-
-    # Resetea la posicion del asteroide al borde de la pantalla a altura aleatoria
-    def reset(self):
-        self.x = WIDTH
-        self.y = randint(HEIGHT - (HEIGHT-ASTEROID_SIZE), HEIGHT-ASTEROID_SIZE)
+    def update(self):
+        self.rect.x = self.rect.x - ASTEROID_SPEED
+        if self.rect.x <= 0:
+            self.rect.x = WIDTH
+            self.rect.y = randint(0, HEIGHT)
 
 
 class Scoreboard:
