@@ -37,7 +37,7 @@ class Front(Scene):
                 if event.type == pg.QUIT:
                     print("Exiting!")
                     pg.quit()
-            self.display.fill(C_RED)
+
             self.draw_background()
             self.draw_title()
             self.draw_text1()

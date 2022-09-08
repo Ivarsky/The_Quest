@@ -1,6 +1,7 @@
 import os
 
 import pygame as pg
+from pygame.sprite import Sprite
 
 from . import *
 
@@ -44,6 +45,20 @@ class HullPoints:
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
+
+"""
+class SpaceshipSprite(Sprite):
+    def __init__(self, ):
+        super().__init__()
+        image_path = os.path.join(
+            "resources", "player", "sprites", "player1.png")
+        self.image = pg.image.load(image_path)
+        self.rect = self.image.get_rect(centerx=(WIDTH-(WIDTH-LATERAL_MARGIN)))
+
+    def update(self):
+        pass
+"""
 
 
 class SpaceShip(pg.Rect):
