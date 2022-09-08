@@ -1,8 +1,9 @@
 import os
+
 import pygame as pg
 
-from the_quest import *
-from the_quest.objects import Asteroid, Scoreboard, SpaceShip
+from . import *
+from .objects import Asteroid, Scoreboard, SpaceShip
 
 
 class Scene:

@@ -1,10 +1,11 @@
 import os
+
 import pygame as pg
+
+from random import randint
 
 from the_quest import *
 from the_quest.scenes import Front, Game, HallOfFame
-
-from random import randint
 
 
 class TheQuest:
