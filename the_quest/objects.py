@@ -74,7 +74,7 @@ class SpaceShip(Sprite):
 
         self.image = pg.transform.scale2x(
             pg.image.load(self.image_path_straight))
-        self.centerx = LATERAL_MARGIN*2
+        self.centerx = LATERAL_MARGIN*3
         self.centery = HEIGHT/2
         self.rect = self.image.get_rect(
             centerx=self.centerx, centery=self.centery)
