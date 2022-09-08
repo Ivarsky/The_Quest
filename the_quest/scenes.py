@@ -81,9 +81,7 @@ class Game(Scene):
     def __init__(self, display):
         self.display = pg.display.set_mode(
             (WIDTH, HEIGHT))
-        self.space_ship = SpaceShip(
-            LATERAL_MARGIN,                         # coord x (left)
-            (HEIGHT-LATERAL_MARGIN)/2)              # coord y (top)
+        self.space_ship = SpaceShip()
         self.clock = pg.time.Clock()
         self.asteroid = Asteroid()
         self.score = Scoreboard()
@@ -121,12 +119,6 @@ class Game(Scene):
                     print("Exiting")
                     pg.quit()
 
-            key_status = pg.key.get_pressed()
-            if key_status[pg.K_UP]:
-                self.space_ship.move(SpaceShip.UP)
-            if key_status[pg.K_DOWN]:
-                self.space_ship.move(SpaceShip.DOWN)
-
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
                 self.asteroid.move()
                 self.collide()
@@ -140,7 +132,8 @@ class Game(Scene):
             self.draw_background()
             # dibuja la nave
             if not self.space_ship.hull_damage.destroyed:
-                pg.draw.rect(self.display, C_WHITE, self.space_ship)
+                self.space_ship.update()
+                self.display.blit(self.space_ship.image, self.space_ship.rect)
             # dibuja los asteroides
             pg.draw.rect(self.display, C_WHITE, self.asteroid)
             # dibuja los puntos para ganar (asteroides esquivados)

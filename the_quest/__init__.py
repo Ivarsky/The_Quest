@@ -17,4 +17,4 @@ C_GREEN = (00, 00, 99)
 C_YELLOW = (255, 255, 0)
 
 
-WIN_SCORE = 3
+WIN_SCORE = 10

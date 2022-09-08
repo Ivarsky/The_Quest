@@ -61,29 +61,34 @@ class SpaceshipSprite(Sprite):
 """
 
 
-class SpaceShip(pg.Rect):
+class SpaceShip(Sprite):
 
     UP = True
     DOWN = False
 
-    def __init__(self, x, y):
-        super(SpaceShip, self). __init__(x, y, SHIP_LENGTH, SHIP_WIDTH)
+    def __init__(self):
+        super(). __init__()
+        image_path = os.path.join(
+            "resources", "player", "sprites", "player1.png")
+        self.image = pg.image.load(image_path)
+        self.centerx = LATERAL_MARGIN
+        self.centery = HEIGHT/2
+        self.rect = self.image.get_rect(
+            centerx=self.centerx, centery=self.centery)
         self.speed = 5
         self.hull_damage = HullPoints()
 
-    def move(self, direction):
-        """
-        Mueve la nave arriba o abajo según que tecla se pulse
-        """
+    def update(self):
+        key_status = pg.key.get_pressed()
+        if key_status[pg.K_UP]:
+            self.rect.y -= self.speed
+            if self.rect.top < 0:
+                self.rect.top = 0
 
-        if direction == self.UP:
-            self.y = self.y - self.speed
-            if self.y < 0:
-                self.y = 0
-        else:
-            self.y = self.y + self.speed
-            if self.y > HEIGHT - SHIP_WIDTH:
-                self.y = HEIGHT - SHIP_WIDTH
+        if key_status[pg.K_DOWN]:
+            self.rect.y += self.speed
+            if self.rect.bottom > HEIGHT:
+                self.rect.bottom = HEIGHT
 
     def hit_hull(self):
         self.hull_damage.points += 1
