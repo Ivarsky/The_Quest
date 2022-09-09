@@ -5,6 +5,8 @@ import pygame as pg
 from . import *
 from .objects import Asteroid, Scoreboard, SpaceShip
 
+from random import randint
+
 
 class Scene:
     def __init__(self, screen: pg.Surface):
@@ -100,7 +102,9 @@ class Game(Scene):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
             if not self.space_ship.hull_damage.destroyed:
-                self.asteroid.update()
+                self.asteroid.rect.x = WIDTH
+                self.asteroid.rect.y = self.asteroid.rect.y = randint(
+                    0, HEIGHT)
 
     def main_loop(self):
         print("Starting game!")
@@ -122,11 +126,14 @@ class Game(Scene):
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
                 self.asteroid.update()
                 self.collide()
-            if self.asteroid.rect.x <= 0:
+            else:  # para el asteroide
+                self.asteroid.rect.x = WIDTH
+                self.asteroid.rect.y = randint(0, HEIGHT)
+
+            if self.asteroid.rect.x <= 1:
                 self.score.add_score()
                 self.score.check_win_condition()
 
-            # self.display.fill(C_BLACK)   <---- DELETE
             # dibuja el fondo
             self.draw_background()
             # dibuja la nave

@@ -94,18 +94,20 @@ class SpaceShip(Sprite):
 class Asteroid(Sprite):
     def __init__(self):
         super().__init__()
+        self.score = Scoreboard()
+        self.space_ship = SpaceShip()
         image_path = os.path.join("resources", "asteroids", "asteroid.png")
         self.image = pg.image.load(image_path)
-        self.centerx = WIDTH
-        self.centery = randint(0, HEIGHT)
-        self.rect = self.image.get_rect(
-            centerx=self.centerx, centery=self.centery)
+        self.x = WIDTH
+        self.y = randint(0, HEIGHT)
+        self.rect = self.image.get_rect(x=self.x, y=self.y)
 
     def update(self):
-        self.rect.x = self.rect.x - ASTEROID_SPEED
-        if self.rect.x <= 0:
-            self.rect.x = WIDTH
-            self.rect.y = randint(0, HEIGHT)
+        if not self.score.check_win_condition == True:
+            self.rect.x = self.rect.x - ASTEROID_SPEED
+            if self.rect.x <= 0:
+                self.rect.x = WIDTH
+                self.rect.y = randint(0, HEIGHT)
 
 
 class Scoreboard:
@@ -125,20 +127,20 @@ class Scoreboard:
             self.win = True
             print("WIN!")
 
-    def add_score(self):
-        """
-        Marca punto
-        """
-        self.points += 1
-        print(f"{self.points} Asteroids dodged!")
-
     def initialize(self):
         self.points = 0
         self.win = False
 
+    def add_score(self):
+        """
+        Marca punto
+        """
+        self.points = self.points + 1
+        print(f"{self.points} Asteroids dodged!")
+
     def draw(self, screen):
         text = pg.font.Font.render(
-            self.typography, str(self.points), True, C_WHITE)
+            self.typography, str(self.points), True, C_YELLOW)
         pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
         pos_y = LATERAL_MARGIN
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
