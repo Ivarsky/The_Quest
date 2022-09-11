@@ -131,7 +131,11 @@ class Game(Scene):
                     print("Exiting")
                     pg.quit()
 
-                    # mueve asteroides y comprueba si chocan con la nave
+            if self.small_asteroid.rect.x <= 1 or self.big_asteroid.rect.x <= 1:
+                self.score.add_score()
+                self.score.check_win_condition()
+
+                # mueve asteroides y comprueba si chocan con la nave
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
                 self.small_asteroid.update()
@@ -141,13 +145,6 @@ class Game(Scene):
                 self.big_asteroid.rect.y = randint(0, HEIGHT)
                 self.small_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = randint(0, HEIGHT)
-
-            if self.big_asteroid.rect.x <= 1:
-                self.score.add_score()
-                self.score.check_win_condition()
-            if self.small_asteroid.rect.x <= 1:
-                self.score.add_score()
-                self.score.check_win_condition()
 
             # dibuja el fondo
             self.draw_background()

@@ -121,12 +121,13 @@ class SmallAsteroid(Sprite):
         self.x = WIDTH
         self.y = randint(0, HEIGHT)
         self.rect = self.image.get_rect(x=self.x, y=self.y)
+        self.speed = ASTEROID_SPEED
 
     def update(self):
         if not self.score.check_win_condition == True:
-            speed = randint(7, 10)
-            self.rect.x = self.rect.x - speed
+            self.rect.x = self.rect.x - self.speed
             if self.rect.x <= 0:
+                self.speed = randint(7, 10)
                 self.rect.x = WIDTH
                 self.rect.y = randint(0, HEIGHT)
 
