@@ -91,13 +91,13 @@ class SpaceShip(Sprite):
         self.hull_damage.points += 1
 
 
-class Asteroid(Sprite):
+class BigAsteroid(Sprite):
     def __init__(self):
         super().__init__()
         self.score = Scoreboard()
         self.space_ship = SpaceShip()
         image_path = os.path.join("resources", "asteroids", "asteroid.png")
-        self.image = pg.image.load(image_path)
+        self.image = pg.transform.scale2x(pg.image.load(image_path))
         self.x = WIDTH
         self.y = randint(0, HEIGHT)
         self.rect = self.image.get_rect(x=self.x, y=self.y)

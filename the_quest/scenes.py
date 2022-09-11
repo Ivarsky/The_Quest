@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import Asteroid, Scoreboard, SpaceShip
+from .objects import BigAsteroid, Scoreboard, SpaceShip
 
 from random import randint
 
@@ -85,7 +85,7 @@ class Game(Scene):
             (WIDTH, HEIGHT))
         self.space_ship = SpaceShip()
         self.clock = pg.time.Clock()
-        self.asteroid = Asteroid()
+        self.big_asteroid = BigAsteroid()
         self.score = Scoreboard()
         image_background = pg.image.load(os.path.join(
             "resources", "background", "bg-preview-big.png"))
@@ -98,12 +98,12 @@ class Game(Scene):
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
         """
-        if pg.Rect.colliderect(self.asteroid.rect, self.space_ship.rect):
+        if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
             if not self.space_ship.hull_damage.destroyed:
-                self.asteroid.rect.x = WIDTH
-                self.asteroid.rect.y = self.asteroid.rect.y = randint(
+                self.big_asteroid.rect.x = WIDTH
+                self.big_asteroid.rect.y = self.big_asteroid.rect.y = randint(
                     0, HEIGHT)
 
     def main_loop(self):
@@ -124,13 +124,13 @@ class Game(Scene):
                     pg.quit()
 
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
-                self.asteroid.update()
+                self.big_asteroid.update()
                 self.collide()
             else:  # para el asteroide
-                self.asteroid.rect.x = WIDTH
-                self.asteroid.rect.y = randint(0, HEIGHT)
+                self.big_asteroid.rect.x = WIDTH
+                self.big_asteroid.rect.y = randint(0, HEIGHT)
 
-            if self.asteroid.rect.x <= 1:
+            if self.big_asteroid.rect.x <= 0:
                 self.score.add_score()
                 self.score.check_win_condition()
 
@@ -141,7 +141,7 @@ class Game(Scene):
                 self.space_ship.update()
                 self.display.blit(self.space_ship.image, self.space_ship.rect)
             # dibuja los asteroides
-            self.display.blit(self.asteroid.image, self.asteroid.rect)
+            self.display.blit(self.big_asteroid.image, self.big_asteroid.rect)
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
