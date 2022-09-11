@@ -110,6 +110,27 @@ class BigAsteroid(Sprite):
                 self.rect.y = randint(0, HEIGHT)
 
 
+class SmallAsteroid(Sprite):
+    def __init__(self):
+        super().__init__()
+        self.score = Scoreboard()
+        self.space_ship = SpaceShip()
+        image_path = os.path.join(
+            "resources", "asteroids", "asteroid-small.png")
+        self.image = pg.transform.scale2x(pg.image.load(image_path))
+        self.x = WIDTH
+        self.y = randint(0, HEIGHT)
+        self.rect = self.image.get_rect(x=self.x, y=self.y)
+
+    def update(self):
+        if not self.score.check_win_condition == True:
+            speed = randint(7, 17)
+            self.rect.x = self.rect.x - speed
+            if self.rect.x <= 0:
+                self.rect.x = WIDTH
+                self.rect.y = randint(0, HEIGHT)
+
+
 class Scoreboard:
     """
     guarda la puntuacion y la pinta

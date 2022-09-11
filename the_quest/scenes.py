@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAsteroid, Scoreboard, SpaceShip
+from .objects import BigAsteroid, Scoreboard, SmallAsteroid, SpaceShip
 
 from random import randint
 
@@ -86,6 +86,7 @@ class Game(Scene):
         self.space_ship = SpaceShip()
         self.clock = pg.time.Clock()
         self.big_asteroid = BigAsteroid()
+        self.small_asteroid = SmallAsteroid()
         self.score = Scoreboard()
         image_background = pg.image.load(os.path.join(
             "resources", "background", "bg-preview-big.png"))
@@ -125,12 +126,13 @@ class Game(Scene):
 
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
+                self.small_asteroid.update()
                 self.collide()
             else:  # para el asteroide
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = randint(0, HEIGHT)
 
-            if self.big_asteroid.rect.x <= 0:
+            if self.big_asteroid.rect.x <= 1:
                 self.score.add_score()
                 self.score.check_win_condition()
 
@@ -142,6 +144,8 @@ class Game(Scene):
                 self.display.blit(self.space_ship.image, self.space_ship.rect)
             # dibuja los asteroides
             self.display.blit(self.big_asteroid.image, self.big_asteroid.rect)
+            self.display.blit(self.small_asteroid.image,
+                              self.small_asteroid.rect)
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
