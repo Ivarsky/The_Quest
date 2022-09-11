@@ -138,8 +138,13 @@ class Game(Scene):
             else:  # para el asteroide
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = randint(0, HEIGHT)
+                self.small_asteroid.rect.x = WIDTH
+                self.big_asteroid.rect.y = randint(0, HEIGHT)
 
             if self.big_asteroid.rect.x <= 1:
+                self.score.add_score()
+                self.score.check_win_condition()
+            if self.small_asteroid.rect.x <= 1:
                 self.score.add_score()
                 self.score.check_win_condition()
 

@@ -124,7 +124,7 @@ class SmallAsteroid(Sprite):
 
     def update(self):
         if not self.score.check_win_condition == True:
-            speed = randint(7, 17)
+            speed = randint(7, 10)
             self.rect.x = self.rect.x - speed
             if self.rect.x <= 0:
                 self.rect.x = WIDTH
