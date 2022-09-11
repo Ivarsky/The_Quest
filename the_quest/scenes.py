@@ -131,6 +131,7 @@ class Game(Scene):
                     print("Exiting")
                     pg.quit()
 
+                    # mueve asteroides y comprueba si chocan con la nave
             if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
                 self.small_asteroid.update()
