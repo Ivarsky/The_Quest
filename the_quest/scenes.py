@@ -106,6 +106,13 @@ class Game(Scene):
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = self.big_asteroid.rect.y = randint(
                     0, HEIGHT)
+        if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
+            self.space_ship.hit_hull()
+            self.space_ship.hull_damage.ckeck_gameover_condition()
+            if not self.space_ship.hull_damage.destroyed:
+                self.small_asteroid.rect.x = WIDTH
+                self.small_asteroid.rect.y = self.small_asteroid.rect.y = randint(
+                    0, HEIGHT)
 
     def main_loop(self):
         print("Starting game!")
