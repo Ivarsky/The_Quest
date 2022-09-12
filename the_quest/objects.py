@@ -173,3 +173,33 @@ class Scoreboard:
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
+
+class Explosion(Sprite):
+    def __init__(self):
+        super().__init__()
+        self.space_ship = SpaceShip()
+        self.images = []
+        for num in range(1, 6):
+            img = pg.image.load(os.path.join(
+                "resources", "explosion", "sprites", f"explosion{num}.png"))
+            img = pg.transform.scale2x(img)
+            self.images.append(img)
+        self.index = 0
+        self.image = self.images[self.index]
+        self.rect = self.image.get_rect(
+            x=self.space_ship.rect.x, y=self.space_ship.rect.y)
+        self.counter = 0
+
+    def update(self):
+        explosion_speed = 4
+        # actualiza animacion de explosion
+        self.counter += 1
+        if self.counter >= explosion_speed and self.index < len(self.images) - 1:
+            self.counter = 0
+            self.index += 1
+            self.image = self.images[self.index]
+
+        # si la animacion se completa, resetea el index de la animacion
+        if self.index >= len(self.images) - 1 and self.counter >= explosion_speed:
+            self.kill()
