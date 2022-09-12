@@ -88,7 +88,7 @@ code .
 
 # Atribuciones
 
-El Artwork está creado por Luis Zuno (@ansimuz)
+El Artwork ha sido creado por Luis Zuno (@ansimuz)
 
 ## Links a sus redes
 

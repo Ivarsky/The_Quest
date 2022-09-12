@@ -99,6 +99,7 @@ class Game(Scene):
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
         """
+        # colision entre asteroide grande y nave
         if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
@@ -106,6 +107,7 @@ class Game(Scene):
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = self.big_asteroid.rect.y = randint(
                     0, HEIGHT)
+        # colision entre asteroide pequeño y nave
         if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
@@ -131,7 +133,7 @@ class Game(Scene):
                     print("Exiting")
                     pg.quit()
 
-            if self.small_asteroid.rect.x <= 1 or self.big_asteroid.rect.x <= 1:
+            if self.big_asteroid.rect.x <= 1:  # habria que añadir el small asteroid tambien pero no lo cuenta bien
                 self.score.add_score()
                 self.score.check_win_condition()
 
