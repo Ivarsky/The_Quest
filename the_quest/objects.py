@@ -95,7 +95,6 @@ class BigAsteroid(Sprite):
     def __init__(self):
         super().__init__()
         self.score = Scoreboard()
-        self.space_ship = SpaceShip()
         image_path = os.path.join("resources", "asteroids", "asteroid.png")
         self.image = pg.transform.scale2x(pg.image.load(image_path))
         self.x = WIDTH
