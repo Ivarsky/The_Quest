@@ -173,3 +173,9 @@ class Scoreboard:
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
+
+class Explosion(Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = []
