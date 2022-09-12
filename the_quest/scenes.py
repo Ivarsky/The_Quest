@@ -133,7 +133,11 @@ class Game(Scene):
                     print("Exiting")
                     pg.quit()
 
-            if self.big_asteroid.rect.x <= 1:  # habria que añadir el small asteroid tambien pero no lo cuenta bien
+            if self.big_asteroid.rect.x <= 1:
+                self.score.add_score()
+                self.score.check_win_condition()
+
+            if self.small_asteroid.rect.x <= 1:  # cuenta el asteroide pequeño cuando quiere
                 self.score.add_score()
                 self.score.check_win_condition()
 
