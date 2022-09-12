@@ -176,13 +176,13 @@ class Scoreboard:
 
 
 class Explosion(Sprite):
-    def __init__(self, x, y):
+    def __init__(self):
         super().__init__()
         self.space_ship = SpaceShip()
         self.images = []
         for num in range(1, 6):
             img = pg.image.load(os.path.join(
-                "resources", "explosion", "sprites", f"explosion{num}"))
+                "resources", "explosion", "sprites", f"explosion{num}.png"))
             img = pg.transform.scale2x(img)
             self.images.append(img)
         self.index = 0

@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAsteroid, Scoreboard, SmallAsteroid, SpaceShip
+from .objects import BigAsteroid, Explosion, Scoreboard, SmallAsteroid, SpaceShip
 
 from random import randint
 
@@ -84,6 +84,7 @@ class Game(Scene):
         self.display = pg.display.set_mode(
             (WIDTH, HEIGHT))
         self.space_ship = SpaceShip()
+        self.explosion = Explosion()
         self.clock = pg.time.Clock()
         self.big_asteroid = BigAsteroid()
         self.small_asteroid = SmallAsteroid()
@@ -118,6 +119,7 @@ class Game(Scene):
 
     def main_loop(self):
         print("Starting game!")
+        explosion_group = pg.sprite.Group()
 
         while True:
             for event in pg.event.get():
@@ -166,6 +168,18 @@ class Game(Scene):
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
+
+            # dibuja explosion
+            explosion_group.draw(self.display)
+            explosion_group.update()
+            if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
+                explosion = self.explosion(
+                    x=self.space_ship.rect.x, y=self.space_ship.rect.y)
+                explosion_group.add(explosion)
+            if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
+                explosion = self.explosion(
+                    x=self.space_ship.rect.x, y=self.space_ship.rect.y)
+                explosion_group.add(explosion)
 
             pg.display.flip()
             self.clock.tick(FPS)
