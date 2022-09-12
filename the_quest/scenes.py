@@ -169,18 +169,6 @@ class Game(Scene):
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
 
-            # dibuja explosion
-            explosion_group.draw(self.display)
-            explosion_group.update()
-            if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
-                explosion = self.explosion(
-                    x=self.space_ship.rect.x, y=self.space_ship.rect.y)
-                explosion_group.add(explosion)
-            if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
-                explosion = self.explosion(
-                    x=self.space_ship.rect.x, y=self.space_ship.rect.y)
-                explosion_group.add(explosion)
-
             pg.display.flip()
             self.clock.tick(FPS)
 
