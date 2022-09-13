@@ -5,7 +5,7 @@ import pygame as pg
 from random import randint
 
 from . import *
-from .scenes import Front, Game, HallOfFame
+from .scenes import Front, Game, HallOfFame, Story
 
 
 class TheQuest:
@@ -22,6 +22,7 @@ class TheQuest:
 
         self.scenes = [
             Front(self.display),
+            Story(self.display),
             Game(self.display),
             HallOfFame(self.display),
         ]
