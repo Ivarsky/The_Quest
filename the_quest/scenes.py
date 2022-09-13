@@ -92,16 +92,14 @@ class Game(Scene):
         image_background = pg.image.load(os.path.join(
             "resources", "background", "bg-preview-big.png"))
         self.background = pg.transform.scale2x(image_background)
+        self.explosion_group = pg.sprite.Group()
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
 
     def make_explosion(self):
-        explosion_group = pg.sprite.Group()
         explosion = Explosion(self.space_ship.rect.x, self.space_ship.rect.y)
-        explosion_group.add(explosion)
-        explosion_group.draw(self.display)
-        explosion_group.update()
+        self.explosion_group.add(explosion)
 
     def collide(self):
         """
@@ -111,23 +109,28 @@ class Game(Scene):
         if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
+            self.make_explosion()
 
             if not self.space_ship.hull_damage.destroyed:
+                self.make_explosion()
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = self.big_asteroid.rect.y = randint(
                     0, HEIGHT)
         # colision entre asteroide pequeño y nave
         if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
+            self.make_explosion()
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
 
             if not self.space_ship.hull_damage.destroyed:
+                self.make_explosion()
                 self.small_asteroid.rect.x = WIDTH
                 self.small_asteroid.rect.y = self.small_asteroid.rect.y = randint(
                     0, HEIGHT)
 
     def main_loop(self):
         print("Starting game!")
+
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
@@ -142,6 +145,19 @@ class Game(Scene):
                     print("Exiting")
                     pg.quit()
 
+            # mueve asteroides y comprueba si chocan con la nave
+            if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
+                self.big_asteroid.update()
+                self.small_asteroid.update()
+                self.collide()
+            # para el asteroide
+            else:
+                self.big_asteroid.rect.x = WIDTH
+                self.big_asteroid.rect.y = randint(0, HEIGHT)
+                self.small_asteroid.rect.x = WIDTH
+                self.big_asteroid.rect.y = randint(0, HEIGHT)
+
+            # Resetea asteroides y marca si esquivados
             if self.big_asteroid.rect.x <= 1:
                 self.score.add_score()
                 self.score.check_win_condition()
@@ -157,17 +173,6 @@ class Game(Scene):
                     self.small_asteroid.rect.x = WIDTH
                     self.small_asteroid.rect.y = randint(0, HEIGHT)
 
-                # mueve asteroides y comprueba si chocan con la nave
-            if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
-                self.big_asteroid.update()
-                self.small_asteroid.update()
-                self.collide()
-            else:  # para el asteroide
-                self.big_asteroid.rect.x = WIDTH
-                self.big_asteroid.rect.y = randint(0, HEIGHT)
-                self.small_asteroid.rect.x = WIDTH
-                self.big_asteroid.rect.y = randint(0, HEIGHT)
-
             # dibuja el fondo
             self.draw_background()
             # dibuja la nave
@@ -180,7 +185,11 @@ class Game(Scene):
                               self.small_asteroid.rect)
 
             # dibuja explosion
-            self.make_explosion()
+            self.explosion_group.draw(self.display)
+            self.explosion_group.update()
+            # if self.explosion_flag == True:
+            #    self.make_explosion()
+            #    self.explosion_group.update()
 
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)

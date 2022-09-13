@@ -196,7 +196,7 @@ class Explosion(Sprite):
         self.iteration += 1
         if self.iteration == self.limit_iteration:
             self.next_image += 1
-            if self.next_image >= len(self.sprites):
+            if self.next_image >= len(self.sprites) - 1:
                 self.kill()
             self.image = self.sprites[self.next_image]
             self.iteration = 0
