@@ -146,7 +146,7 @@ class Game(Scene):
                     pg.quit()
 
             # mueve asteroides y comprueba si chocan con la nave
-            if self.score.win == False and self.space_ship.hull_damage.destroyed == False:
+            if self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
                 self.small_asteroid.update()
                 self.collide()
@@ -158,20 +158,22 @@ class Game(Scene):
                 self.big_asteroid.rect.y = randint(0, HEIGHT)
 
             # Resetea asteroides y marca si esquivados
-            if self.big_asteroid.rect.x <= 1:
-                self.score.add_score()
-                self.score.check_win_condition()
-                if self.big_asteroid.rect.x <= 0:
-                    self.big_asteroid.rect.x = WIDTH
-                    self.big_asteroid.rect.y = randint(0, HEIGHT)
+            if self.score.win == False:
+                if self.big_asteroid.rect.x <= 1:
+                    self.score.add_score()
+                    self.score.check_win_condition()
+                    if self.big_asteroid.rect.x <= 0:
+                        self.big_asteroid.rect.x = WIDTH
+                        self.big_asteroid.rect.y = randint(0, HEIGHT)
 
-            if self.small_asteroid.rect.x <= 1:
-                self.score.add_score()
-                self.score.check_win_condition()
-                if self.small_asteroid.rect.x <= 0:
-                    self.small_asteroid.speed = randint(7, 10)
-                    self.small_asteroid.rect.x = WIDTH
-                    self.small_asteroid.rect.y = randint(0, HEIGHT)
+            if self.score.win == False:
+                if self.small_asteroid.rect.x <= 1:
+                    self.score.add_score()
+                    self.score.check_win_condition()
+                    if self.small_asteroid.rect.x <= 0:
+                        self.small_asteroid.speed = randint(7, 10)
+                        self.small_asteroid.rect.x = WIDTH
+                        self.small_asteroid.rect.y = randint(0, HEIGHT)
 
             # dibuja el fondo
             self.draw_background()
