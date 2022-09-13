@@ -140,7 +140,7 @@ class Story(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
 
-class Game(Scene):
+class Game1(Scene):
 
     def __init__(self, display):
         self.display = pg.display.set_mode(

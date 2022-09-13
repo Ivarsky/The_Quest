@@ -141,7 +141,7 @@ class Scoreboard:
         pg.font.init()
         font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
         self.typography = pg.font.Font(font_file, 50)
-        self.typography_endgame = pg.font.Font(font_file, 50)
+        self.typography_endgame = pg.font.Font(font_file, 18)
 
     def check_win_condition(self):
         if self.points == WIN_SCORE:
@@ -168,10 +168,23 @@ class Scoreboard:
 
         if self.win == True:
             text = pg.font.Font.render(
-                self.typography_endgame, "You Win!", True, C_WHITE)
+                self.typography_endgame, "Bien hecho! abandonamos el sistema solar!", True, C_YELLOW)
+            text1 = pg.font.Font.render(
+                self.typography_endgame, "Ahora emprenderemos nuestro largo viaje, Nova Terra nos espera!", True, C_YELLOW)
+            text2 = pg.font.Font.render(
+                self.typography_endgame, "Espacio para continuar", True, C_YELLOW)
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
+
+            pos_x1 = (WIDTH - text1.get_width())/2
+            pos_y1 = pos_y + 25
+
+            pos_x2 = (WIDTH - text2.get_width())/2
+            pos_y2 = pos_y1 + 50
+
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+            pg.surface.Surface.blit(screen, text1, (pos_x1, pos_y1))
+            pg.surface.Surface.blit(screen, text2, (pos_x2, pos_y2))
 
 
 class Explosion(Sprite):
