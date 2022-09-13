@@ -149,7 +149,8 @@ class Game(Scene):
             if self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
                 self.small_asteroid.update()
-                self.collide()
+                if self.score.win == False:
+                    self.collide()
             # para el asteroide
             else:
                 self.big_asteroid.rect.x = WIDTH
