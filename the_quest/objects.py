@@ -104,9 +104,9 @@ class BigAsteroid(Sprite):
     def update(self):
         if not self.score.check_win_condition == True:
             self.rect.x = self.rect.x - ASTEROID_SPEED
-            if self.rect.x <= 0:
-                self.rect.x = WIDTH
-                self.rect.y = randint(0, HEIGHT)
+            # if self.rect.x <= 0:
+            #    self.rect.x = WIDTH
+            #    self.rect.y = randint(0, HEIGHT)
 
 
 class SmallAsteroid(Sprite):
@@ -120,15 +120,15 @@ class SmallAsteroid(Sprite):
         self.x = WIDTH
         self.y = randint(0, HEIGHT)
         self.rect = self.image.get_rect(x=self.x, y=self.y)
-        self.speed = ASTEROID_SPEED
+        self.speed = ASTEROID_SPEED * 1.5
 
     def update(self):
         if not self.score.check_win_condition == True:
             self.rect.x = self.rect.x - self.speed
-            if self.rect.x <= 0:
-                self.speed = randint(7, 10)
-                self.rect.x = WIDTH
-                self.rect.y = randint(0, HEIGHT)
+            # if self.rect.x <= 0:
+            #    self.speed = randint(7, 10)
+            #    self.rect.x = WIDTH
+            #    self.rect.y = randint(0, HEIGHT)
 
 
 class Scoreboard:
@@ -180,9 +180,9 @@ class Explosion(Sprite):
     limit_iteration = FPS / fps_animation
     iteration = 0
 
-    def __init__(self):
+    def __init__(self, pos_x, pos_y):
         super().__init__()
-
+        self.space_ship = SpaceShip()
         self.sprites = []
         for i in range(5):
             self.sprites.append(pg.transform.scale2x(pg.image.load(
@@ -190,13 +190,13 @@ class Explosion(Sprite):
 
         self.next_image = 0
         self.image = self.sprites[self.next_image]
-        self.rect = self.image.get_rect(x=WIDTH/2, y=HEIGHT/2)
+        self.rect = self.image.get_rect(x=pos_x, y=pos_y)
 
     def update(self):
         self.iteration += 1
         if self.iteration == self.limit_iteration:
             self.next_image += 1
             if self.next_image >= len(self.sprites):
-                self.next_image = 0
+                self.kill()
             self.image = self.sprites[self.next_image]
             self.iteration = 0
