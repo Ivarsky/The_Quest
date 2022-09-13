@@ -119,8 +119,6 @@ class Game(Scene):
 
     def main_loop(self):
         print("Starting game!")
-        explosion_group = pg.sprite.Group()
-
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
@@ -164,6 +162,11 @@ class Game(Scene):
             self.display.blit(self.big_asteroid.image, self.big_asteroid.rect)
             self.display.blit(self.small_asteroid.image,
                               self.small_asteroid.rect)
+
+            # dibuja explosion
+            self.display.blit(self.explosion.image, self.explosion.rect)
+            self.explosion.update()
+
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
