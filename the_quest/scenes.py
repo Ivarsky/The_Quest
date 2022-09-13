@@ -199,6 +199,9 @@ class Game1(Scene):
                     #    if event.key == pg.K_ESCAPE:
                     #        print("Exiting")
                     #        return
+                    if event.key == pg.K_SPACE:
+                        if self.score.win == True:
+                            return
                     if event.key == pg.K_r:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
