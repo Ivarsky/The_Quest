@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAsteroid, Explosion, Scoreboard, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, Scoreboard, SmallAlienShip, SmallAsteroid, SpaceShip
 
 from random import randint
 
@@ -200,8 +200,8 @@ class Game1(Scene):
                     #        print("Exiting")
                     #        return
                     if event.key == pg.K_SPACE:
-                        if self.score.win == True:
-                            return
+                        # if self.score.win == True:
+                        return
                     if event.key == pg.K_r:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
@@ -363,6 +363,8 @@ class Game2(Scene):
         self.clock = pg.time.Clock()
         self.big_asteroid = BigAsteroid()
         self.small_asteroid = SmallAsteroid()
+        self.big_enemy = BigAlienShip()
+        self.small_enemy = SmallAlienShip()
         self.score = Scoreboard()
 
         self.explosion_group = pg.sprite.Group()
@@ -402,6 +404,28 @@ class Game2(Scene):
                 self.small_asteroid.rect.y = self.small_asteroid.rect.y = randint(
                     0, HEIGHT)
 
+        if pg.Rect.colliderect(self.big_enemy.rect, self.space_ship.rect):
+            self.make_explosion()
+            self.space_ship.hit_hull()
+            self.space_ship.hull_damage.ckeck_gameover_condition()
+
+            if not self.space_ship.hull_damage.destroyed:
+                self.make_explosion()
+                self.big_enemy.rect.x = WIDTH
+                self.big_enemy.rect.y = self.big_enemy.rect.y = randint(
+                    0, HEIGHT)
+
+        if pg.Rect.colliderect(self.small_enemy.rect, self.space_ship.rect):
+            self.make_explosion()
+            self.space_ship.hit_hull()
+            self.space_ship.hull_damage.ckeck_gameover_condition()
+
+            if not self.space_ship.hull_damage.destroyed:
+                self.make_explosion()
+                self.small_enemy.rect.x = WIDTH
+                self.small_enemy.rect.y = self.small_enemy.rect.y = randint(
+                    0, HEIGHT)
+
     def main_loop(self):
         print("Starting game!")
 
@@ -422,20 +446,28 @@ class Game2(Scene):
                     print("Exiting")
                     pg.quit()
 
-            # mueve asteroides y comprueba si chocan con la nave
+            # mueve obstaculos y comprueba si chocan con la nave
             if self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
                 self.small_asteroid.update()
+                self.big_enemy.update()
+                self.small_enemy.update()
+
                 if self.score.win == False:
                     self.collide()
-            # para el asteroide
+
+            # para el obstaculos
             else:
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = randint(0, HEIGHT)
                 self.small_asteroid.rect.x = WIDTH
-                self.big_asteroid.rect.y = randint(0, HEIGHT)
+                self.small_asteroid.rect.y = randint(0, HEIGHT)
+                self.big_enemy.rect.x = WIDTH
+                self.big_enemy.rect.y = randint(0, HEIGHT)
+                self.small_enemy.rect.x = WIDTH
+                self.small_enemy.rect.y = randint(0, HEIGHT)
 
-            # Resetea asteroides y marca si esquivados
+            # Resetea obstaculos y marca si esquivados
             if self.score.win == False:
                 if self.big_asteroid.rect.x <= 1:
                     self.score.add_score()
@@ -453,22 +485,42 @@ class Game2(Scene):
                         self.small_asteroid.rect.x = WIDTH
                         self.small_asteroid.rect.y = randint(0, HEIGHT)
 
+            if self.score.win == False:
+                if self.big_enemy.rect.x <= 1:
+                    self.score.add_score()
+                    self.score.check_win_condition()
+                    if self.big_enemy.rect.x <= 0:
+                        self.big_enemy.speed = randint(7, 10)
+                        self.big_enemy.rect.x = WIDTH
+                        self.big_enemy.rect.y = randint(0, HEIGHT)
+
+            if self.score.win == False:
+                if self.small_enemy.rect.x <= 1:
+                    self.score.add_score()
+                    self.score.check_win_condition()
+                    if self.small_enemy.rect.x <= 0:
+                        self.small_enemy.speed = randint(7, 10)
+                        self.small_enemy.rect.x = WIDTH
+                        self.small_enemy.rect.y = randint(0, HEIGHT)
+
             # dibuja el fondo
             self.draw_background()
             # dibuja la nave
             if not self.space_ship.hull_damage.destroyed:
                 self.space_ship.update()
                 self.display.blit(self.space_ship.image, self.space_ship.rect)
-            # dibuja los asteroides
+            # dibuja los obstaculos
             self.display.blit(self.big_asteroid.image, self.big_asteroid.rect)
             self.display.blit(self.small_asteroid.image,
                               self.small_asteroid.rect)
+            self.display.blit(self.big_enemy.image, self.big_enemy.rect)
+            self.display.blit(self.small_enemy.image, self.small_enemy.rect)
 
             # dibuja explosion
             self.explosion_group.draw(self.display)
             self.explosion_group.update()
 
-            # dibuja los puntos para ganar (asteroides esquivados)
+            # dibuja los puntos para ganar (obstaculos esquivados)
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)

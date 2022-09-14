@@ -122,7 +122,7 @@ class SmallAsteroid(Sprite):
         self.rect.x = self.rect.x - self.speed
 
 
-class AlienShip(Sprite):
+class BigAlienShip(Sprite):
 
     fps_animation = 12
     limit_iteration = FPS / fps_animation
@@ -142,10 +142,43 @@ class AlienShip(Sprite):
         self.x = WIDTH
         self.y = randint(0, HEIGHT)
         self.rect = self.image.get_rect(x=self.x, y=self.y)
-        self.speed = ASTEROID_SPEED * 1.5
+        self.speed_ship = ASTEROID_SPEED * 3
 
     def update(self):
-        self.rect.x = self.rect.x - self.speed
+        self.rect.x = self.rect.x - self.speed_ship
+        self.iteration += 1
+        if self.iteration == self.limit_iteration:
+            self.next_image += 1
+            if self.next_image >= len(self.sprites) - 1:
+                self.next_image = 0
+            self.image = self.sprites[self.next_image]
+            self.iteration = 0
+
+
+class SmallAlienShip(Sprite):
+
+    fps_animation = 12
+    limit_iteration = FPS / fps_animation
+    iteration = 0
+
+    def __init__(self):
+        super().__init__()
+        self.score = Scoreboard()
+        self.space_ship = SpaceShip()
+        self.sprites = []
+        for i in range(5):
+            self.sprites.append(pg.image.load(
+                os.path.join("resources", "enemy", "sprites", f"enemy{i}.png")))
+
+        self.next_image = 0
+        self.image = self.sprites[self.next_image]
+        self.x = WIDTH
+        self.y = randint(0, HEIGHT)
+        self.rect = self.image.get_rect(x=self.x, y=self.y)
+        self.speed_small_ship = ASTEROID_SPEED * 4
+
+    def update(self):
+        self.rect.x = self.rect.x - self.speed_small_ship
         self.iteration += 1
         if self.iteration == self.limit_iteration:
             self.next_image += 1
