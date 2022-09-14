@@ -34,7 +34,7 @@ class HullPoints:
 
     def draw(self, screen):
         text = pg.font.Font.render(
-            self.typography, "HP "+str(self.points), True, C_WHITE)
+            self.typography, "HP "+str(3 - self.points), True, C_WHITE)
         pos_x = (WIDTH - text.get_width())/8
         pos_y = LATERAL_MARGIN
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
@@ -94,7 +94,6 @@ class SpaceShip(Sprite):
 class BigAsteroid(Sprite):
     def __init__(self):
         super().__init__()
-        self.score = Scoreboard()
         image_path = os.path.join("resources", "asteroids", "asteroid.png")
         self.image = pg.transform.scale2x(pg.image.load(image_path))
         self.x = WIDTH
@@ -108,8 +107,6 @@ class BigAsteroid(Sprite):
 class SmallAsteroid(Sprite):
     def __init__(self):
         super().__init__()
-        self.score = Scoreboard()
-        self.space_ship = SpaceShip()
         image_path = os.path.join(
             "resources", "asteroids", "asteroid-small.png")
         self.image = pg.transform.scale2x(pg.image.load(image_path))
@@ -130,8 +127,6 @@ class BigAlienShip(Sprite):
 
     def __init__(self):
         super().__init__()
-        self.score = Scoreboard()
-        self.space_ship = SpaceShip()
         self.sprites = []
         for i in range(5):
             self.sprites.append(pg.transform.scale2x(pg.image.load(
@@ -163,8 +158,6 @@ class SmallAlienShip(Sprite):
 
     def __init__(self):
         super().__init__()
-        self.score = Scoreboard()
-        self.space_ship = SpaceShip()
         self.sprites = []
         for i in range(5):
             self.sprites.append(pg.image.load(
@@ -188,7 +181,7 @@ class SmallAlienShip(Sprite):
             self.iteration = 0
 
 
-class Scoreboard:
+class Scoreboard1:
     """
     guarda la puntuacion y la pinta
     """
@@ -244,6 +237,51 @@ class Scoreboard:
             pg.surface.Surface.blit(screen, text2, (pos_x2, pos_y2))
 
 
+class Scoreboard2:
+    """
+    guarda la puntuacion y la pinta
+    """
+
+    def __init__(self):
+        self.initialize()
+        pg.font.init()
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography = pg.font.Font(font_file, 50)
+        self.typography_endgame = pg.font.Font(font_file, 18)
+
+    def check_win_condition(self):
+        if self.points == WIN_SCORE:
+            self.win = True
+            print("WIN!")
+
+    def initialize(self):
+        self.points = 0
+        self.win = False
+
+    def add_score(self):
+        """
+        Marca punto
+        """
+        self.points = self.points + 1
+        print(f"{self.points} Asteroids dodged!")
+
+    def draw(self, screen):
+        text = pg.font.Font.render(
+            self.typography, "Puntos "+str(self.points), True, C_YELLOW)
+        pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
+        pos_y = LATERAL_MARGIN
+        pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+
+        if self.win == True:
+            text2 = pg.font.Font.render(
+                self.typography_endgame, "Espacio para continuar", True, C_YELLOW)
+
+            pos_x2 = (WIDTH - text2.get_width())/2
+            pos_y2 = HEIGHT * 0.75
+
+            pg.surface.Surface.blit(screen, text2, (pos_x2, pos_y2))
+
+
 class Explosion(Sprite):
 
     fps_animation = 12
@@ -270,3 +308,16 @@ class Explosion(Sprite):
                 self.kill()
             self.image = self.sprites[self.next_image]
             self.iteration = 0
+
+
+class Planet(Sprite):
+    def __init__(self):
+        super().__init__()
+        image_path = os.path.join("resources", "asteroids", "asteroid.png")
+        self.image = pg.transform.scale2x(pg.image.load(image_path))
+        self.x = WIDTH
+        self.y = randint(0, HEIGHT)
+        self.rect = self.image.get_rect(x=self.x, y=self.y)
+
+    def update(self):
+        self.rect.x = self.rect.x - ASTEROID_SPEED
