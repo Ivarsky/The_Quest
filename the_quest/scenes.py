@@ -255,9 +255,6 @@ class Game1(Scene):
             # dibuja explosion
             self.explosion_group.draw(self.display)
             self.explosion_group.update()
-            # if self.explosion_flag == True:
-            #    self.make_explosion()
-            #    self.explosion_group.update()
 
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
@@ -470,9 +467,6 @@ class Game2(Scene):
             # dibuja explosion
             self.explosion_group.draw(self.display)
             self.explosion_group.update()
-            # if self.explosion_flag == True:
-            #    self.make_explosion()
-            #    self.explosion_group.update()
 
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
