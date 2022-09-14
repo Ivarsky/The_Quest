@@ -34,8 +34,8 @@ class HullPoints:
 
     def draw(self, screen):
         text = pg.font.Font.render(
-            self.typography, str(self.points), True, C_WHITE)
-        pos_x = (WIDTH - text.get_width())/4
+            self.typography, "HP "+str(self.points), True, C_WHITE)
+        pos_x = (WIDTH - text.get_width())/8
         pos_y = LATERAL_MARGIN
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
@@ -161,7 +161,7 @@ class Scoreboard:
 
     def draw(self, screen):
         text = pg.font.Font.render(
-            self.typography, str(self.points), True, C_YELLOW)
+            self.typography, "Puntos "+str(self.points), True, C_YELLOW)
         pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
         pos_y = LATERAL_MARGIN
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
