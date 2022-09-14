@@ -473,6 +473,15 @@ class Game2(Scene):
         self.small_enemy.rect.x = WIDTH
         self.small_enemy.rect.y = randint(0, HEIGHT)
 
+    def ship_landing(self):
+        self.space_ship.rot_center()
+        if self.space_ship.rect.y > HEIGHT/2:
+            self.space_ship.rect.y -= self.space_ship.speed
+        if self.space_ship.rect.y < HEIGHT/2:
+            self.space_ship.rect.y += self.space_ship.speed
+        if self.space_ship.rect.x <= PLANET_WIDTH+349:
+            self.space_ship.rect.x += self.space_ship.speed*3
+
     def main_loop(self):
         print("Starting game!")
 
@@ -528,22 +537,19 @@ class Game2(Scene):
             self.explosion_group.update()
 
             # dibuja los puntos para ganar (obstaculos esquivados)
+
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
+
             # dibuja planeta
             if self.score.win == True:
                 self.display.blit(self.planet.image, self.planet.rect)
                 self.planet.update()
-            # aterrizaje
+
+            # aterrizaje de la nave
             if self.planet.planet_in_position == True:
-                if self.space_ship.rect.y > HEIGHT/2:
-                    self.space_ship.rect.y -= self.space_ship.speed
-                if self.space_ship.rect.y < HEIGHT/2:
-                    self.space_ship.rect.y += self.space_ship.speed
-                if self.space_ship.rect.x <= PLANET_WIDTH+349:
-                    self.space_ship.rect.x += self.space_ship.speed*3
-                self.space_ship.rot_center()
+                self.ship_landing()
 
             pg.display.flip()
             self.clock.tick(FPS)
