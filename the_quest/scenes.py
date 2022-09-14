@@ -1,9 +1,10 @@
 import os
+from re import T
 
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 
 from random import randint
 
@@ -371,6 +372,7 @@ class Game2(Scene):
         self.big_enemy = BigAlienShip()
         self.small_enemy = SmallAlienShip()
         self.score = Scoreboard2()
+        self.planet = Planet()
 
         self.explosion_group = pg.sprite.Group()
 
@@ -529,6 +531,10 @@ class Game2(Scene):
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
+            # dibuja planeta
+            if self.score.win == True:
+                self.display.blit(self.planet.image, self.planet.rect)
+                self.planet.update()
 
             pg.display.flip()
             self.clock.tick(FPS)

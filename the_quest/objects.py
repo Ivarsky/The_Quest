@@ -313,11 +313,15 @@ class Explosion(Sprite):
 class Planet(Sprite):
     def __init__(self):
         super().__init__()
-        image_path = os.path.join("resources", "asteroids", "asteroid.png")
-        self.image = pg.transform.scale2x(pg.image.load(image_path))
+        image_path = os.path.join("resources", "planet", "planet.png")
+        self.image = pg.transform.scale(
+            pg.image.load(image_path), (PLANET_HEIGHT, PLANET_WIDTH))
         self.x = WIDTH
-        self.y = randint(0, HEIGHT)
+        self.y = 0
         self.rect = self.image.get_rect(x=self.x, y=self.y)
 
     def update(self):
-        self.rect.x = self.rect.x - ASTEROID_SPEED
+        if self.rect.x >= WIDTH/2:
+            self.rect.x = self.rect.x - 5
+        if self.rect.x <= WIDTH/2:
+            self.rect.x == WIDTH/2
