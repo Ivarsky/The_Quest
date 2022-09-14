@@ -66,29 +66,35 @@ class SpaceShip(Sprite):
             centerx=self.centerx, centery=self.centery)
         self.speed = 5
         self.hull_damage = HullPoints()
+        self.planet = Planet()
 
     def update(self):
         key_status = pg.key.get_pressed()
-        if key_status[pg.K_UP]:
-            self.rect.y -= self.speed
-            self.image = pg.transform.scale2x(
-                pg.image.load(self.image_path_up))
-            if self.rect.top < 0:
-                self.rect.top = 0
+        if self.planet.planet_in_position != True:
+            if key_status[pg.K_UP]:
+                self.rect.y -= self.speed
+                self.image = pg.transform.scale2x(
+                    pg.image.load(self.image_path_up))
+                if self.rect.top < 0:
+                    self.rect.top = 0
 
-        elif key_status[pg.K_DOWN]:
-            self.rect.y += self.speed
-            self.image = pg.transform.scale2x(pg.image.load(
-                self.image_path_down))
-            if self.rect.bottom > HEIGHT:
-                self.rect.bottom = HEIGHT
+            elif key_status[pg.K_DOWN]:
+                self.rect.y += self.speed
+                self.image = pg.transform.scale2x(pg.image.load(
+                    self.image_path_down))
+                if self.rect.bottom > HEIGHT:
+                    self.rect.bottom = HEIGHT
 
-        else:
-            self.image = pg.transform.scale2x(pg.image.load(
-                self.image_path_straight))
+            else:
+                self.image = pg.transform.scale2x(pg.image.load(
+                    self.image_path_straight))
 
     def hit_hull(self):
         self.hull_damage.points += 1
+
+    def rot_center(self):
+        self.image = pg.transform.rotate(self.image, 180)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
 
 class BigAsteroid(Sprite):
@@ -301,13 +307,13 @@ class Explosion(Sprite):
         self.rect = self.image.get_rect(x=pos_x, y=pos_y)
 
     def update(self):
-        self.iteration += 1
-        if self.iteration == self.limit_iteration:
-            self.next_image += 1
-            if self.next_image >= len(self.sprites) - 1:
-                self.kill()
-            self.image = self.sprites[self.next_image]
-            self.iteration = 0
+        #self.iteration += 1
+        # if self.iteration == self.limit_iteration:
+        self.next_image += 1
+        if self.next_image >= len(self.sprites) - 1:
+            self.kill()
+        self.image = self.sprites[self.next_image]
+        #self.iteration = 0
 
 
 class Planet(Sprite):
@@ -319,9 +325,11 @@ class Planet(Sprite):
         self.x = WIDTH
         self.y = 0
         self.rect = self.image.get_rect(x=self.x, y=self.y)
+        self.planet_in_position = False
 
     def update(self):
         if self.rect.x >= WIDTH/2:
             self.rect.x = self.rect.x - 5
         if self.rect.x <= WIDTH/2:
-            self.rect.x == WIDTH/2
+            self.planet_in_position = True
+            self.rect.x = WIDTH/2

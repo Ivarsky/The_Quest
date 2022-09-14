@@ -1,5 +1,4 @@
 import os
-from re import T
 
 import pygame as pg
 
@@ -375,6 +374,7 @@ class Game2(Scene):
         self.planet = Planet()
 
         self.explosion_group = pg.sprite.Group()
+        self.planet.planet_in_position = False
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
@@ -503,7 +503,7 @@ class Game2(Scene):
                 if self.score.win == False:
                     self.collide()
 
-            # para el obstaculos si se pierde partida
+            # para obstaculos si se pierde partida
             else:
                 self.stop_obstacles_if_destroid()
                 # Resetea obstaculos y marca si esquivados
@@ -514,8 +514,8 @@ class Game2(Scene):
             self.draw_background()
             # dibuja la nave
             if not self.space_ship.hull_damage.destroyed:
-                self.space_ship.update()
                 self.display.blit(self.space_ship.image, self.space_ship.rect)
+                self.space_ship.update()
             # dibuja los obstaculos
             self.display.blit(self.big_asteroid.image, self.big_asteroid.rect)
             self.display.blit(self.small_asteroid.image,
@@ -535,6 +535,81 @@ class Game2(Scene):
             if self.score.win == True:
                 self.display.blit(self.planet.image, self.planet.rect)
                 self.planet.update()
+            # aterrizaje
+            if self.planet.planet_in_position == True:
+                if self.space_ship.rect.y > HEIGHT/2:
+                    self.space_ship.rect.y -= self.space_ship.speed
+                if self.space_ship.rect.y < HEIGHT/2:
+                    self.space_ship.rect.y += self.space_ship.speed
+                if self.space_ship.rect.x <= PLANET_WIDTH+349:
+                    self.space_ship.rect.x += self.space_ship.speed*3
+                self.space_ship.rot_center()
+
+            pg.display.flip()
+            self.clock.tick(FPS)
+
+
+class Landing(Scene):
+
+    def __init__(self, display):
+        self.display = pg.display.set_mode(
+            (WIDTH, HEIGHT))
+
+        image_background = pg.image.load(os.path.join(
+            "resources", "background", "layered", "bg-back.png"))
+        image_background_stars = pg.image.load(os.path.join(
+            "resources", "background", "layered", "bg-stars.png"))
+        self.background = pg.transform.scale(image_background, (WIDTH, HEIGHT))
+        self.background_stars = pg.transform.scale(
+            image_background_stars, (WIDTH, HEIGHT))
+
+        self.space_ship = SpaceShip()
+        self.clock = pg.time.Clock()
+        self.planet = Planet()
+
+    def draw_background(self):
+        self.display.blit(self.background, (0, 0))
+        self.display.blit(self.background_stars, (0, 0))
+
+    def main_loop(self):
+        print("Starting game!")
+
+        while True:
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    #    if event.key == pg.K_ESCAPE:
+                    #        print("Exiting")
+                    #        return
+                    if event.key == pg.K_SPACE:
+                        return
+                    if event.key == pg.K_r:
+                        self.space_ship.hull_damage.initialize()
+
+                if event.type == pg.QUIT:
+                    print("Exiting")
+                    pg.quit()
+
+            # mueve obstaculos y comprueba si chocan con la nave
+
+            # para obstaculos si se pierde partida
+
+            # dibuja el fondo
+            self.draw_background()
+            # dibuja la nave
+
+            self.display.blit(self.space_ship.image, self.space_ship.rect)
+            self.space_ship.update()
+            # dibuja los obstaculos
+
+            # dibuja explosion
+
+            # dibuja los puntos para ganar (obstaculos esquivados)
+
+            # dibuja los puntos para perder (golpes a la nave)
+            # dibuja planeta
+
+            self.display.blit(self.planet.image, self.planet.rect)
+            self.planet.update()
 
             pg.display.flip()
             self.clock.tick(FPS)
