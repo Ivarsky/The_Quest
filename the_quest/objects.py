@@ -22,6 +22,7 @@ class HullPoints:
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
+            # TODO: que la nave desaparezca al explotar
             print("Ship Destroyed!, GAME OVER")
             self.destroyed = True
         else:
@@ -49,6 +50,10 @@ class HullPoints:
 
 class SpaceShip(Sprite):
 
+    fps_animation = 12
+    limit_iteration = FPS / fps_animation
+    iteration = 0
+
     def __init__(self):
         super(). __init__()
         self.image_path_straight = os.path.join(
@@ -67,6 +72,7 @@ class SpaceShip(Sprite):
         self.speed = 5
         self.hull_damage = HullPoints()
         self.planet = Planet()
+        self.angle = 1
 
     def update(self):
         key_status = pg.key.get_pressed()
@@ -92,7 +98,7 @@ class SpaceShip(Sprite):
     def hit_hull(self):
         self.hull_damage.points += 1
 
-    def rot_center(self):
+    def rot_center(self):  # FIXME Rota demasiado rapido
         self.image = pg.transform.rotate(self.image, 180)
         self.rect = self.image.get_rect(center=self.rect.center)
 
