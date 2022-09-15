@@ -5,7 +5,7 @@ import pygame as pg
 from random import randint
 
 from . import *
-from .scenes import Front, Game1, Game2, HallOfFame, Landing, Story, Story2
+from .scenes import Front, Game1, Game2, HallOfFame, Story, Story2
 
 
 class TheQuest:
@@ -19,6 +19,9 @@ class TheQuest:
         icon = pg.image.load(os.path.join(
             "resources", "player", "sprites", "player1.png"))
         pg.display.set_icon(icon)
+        pg.mixer.music.load(os.path.join(
+            "resources", "music", "exports", "space-asteroids.wav"))
+        pg.mixer.music.play(-1)
 
         self.scenes = [
             Front(self.display),
@@ -26,7 +29,6 @@ class TheQuest:
             Game1(self.display),
             Story2(self.display),
             Game2(self.display),
-            Landing(self.display),
             HallOfFame(self.display),
         ]
 
