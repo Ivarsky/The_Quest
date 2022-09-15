@@ -297,6 +297,8 @@ class Explosion(Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
         self.space_ship = SpaceShip()
+        self.explosion_sound = pg.mixer.Sound(os.path.join(
+            "resources", "Sound FX", "shot 1.wav"))
         self.sprites = []
         for i in range(6):
             self.sprites.append(pg.transform.scale2x(pg.image.load(
@@ -307,6 +309,7 @@ class Explosion(Sprite):
         self.rect = self.image.get_rect(x=pos_x, y=pos_y)
 
     def update(self):
+        self.explosion_sound.play()
         #self.iteration += 1
         # if self.iteration == self.limit_iteration:
         self.next_image += 1
