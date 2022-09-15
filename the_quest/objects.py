@@ -279,13 +279,25 @@ class Scoreboard2:
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
         if self.win == True:
+            text1 = pg.font.Font.render(
+                self.typography_endgame, "¡Lo has conseguido! Aterrizando...", True, C_YELLOW)
+
             text2 = pg.font.Font.render(
+                self.typography_endgame, "¡Un nuevo planeta!, la humanidad vuelve a tener esperanza", True, C_YELLOW)
+
+            text3 = pg.font.Font.render(
                 self.typography_endgame, "Espacio para continuar", True, C_YELLOW)
 
+            pos_x1 = (WIDTH - text1.get_width())/2
+            pos_y1 = HEIGHT * 0.25
             pos_x2 = (WIDTH - text2.get_width())/2
-            pos_y2 = HEIGHT * 0.75
+            pos_y2 = HEIGHT * 0.35
+            pos_x3 = (WIDTH - text3.get_width())/2
+            pos_y3 = HEIGHT * 0.75
 
+            pg.surface.Surface.blit(screen, text1, (pos_x1, pos_y1))
             pg.surface.Surface.blit(screen, text2, (pos_x2, pos_y2))
+            pg.surface.Surface.blit(screen, text3, (pos_x3, pos_y3))
 
 
 class Explosion(Sprite):

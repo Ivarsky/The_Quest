@@ -375,6 +375,7 @@ class Game2(Scene):
 
         self.explosion_group = pg.sprite.Group()
         self.planet.planet_in_position = False
+        self.landing_complete = False
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
@@ -481,6 +482,8 @@ class Game2(Scene):
             self.space_ship.rect.y += self.space_ship.speed
         if self.space_ship.rect.x <= PLANET_WIDTH+349:
             self.space_ship.rect.x += self.space_ship.speed*3
+        if self.space_ship.rect.x >= PLANET_WIDTH+349:
+            self.landing_complete = True
 
     def main_loop(self):
         print("Starting game!")
@@ -492,7 +495,7 @@ class Game2(Scene):
                     #        print("Exiting")
                     #        return
                     if event.key == pg.K_SPACE:
-                        if self.score.win == True:
+                        if self.score.win == True and self.landing_complete == True:
                             return
                     if event.key == pg.K_r:
                         self.score.initialize()
@@ -536,8 +539,7 @@ class Game2(Scene):
             self.explosion_group.draw(self.display)
             self.explosion_group.update()
 
-            # dibuja los puntos para ganar (obstaculos esquivados)
-
+            # dibuja los puntos ganados
             self.score.draw(self.display)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
