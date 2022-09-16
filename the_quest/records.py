@@ -64,11 +64,11 @@ class Records:
                 records_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_NONNUMERIC)
             line_counter = 0
             self.game_records = []
-            for linea in records_reader:
+            for line in records_reader:
                 line_counter += 1
                 if line_counter == 1:
                     continue
-                self.game_records.append([linea[0], linea[1]])
+                self.game_records.append([line[0], line[1]])
 
     def reset(self):
         """

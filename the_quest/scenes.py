@@ -3,7 +3,8 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .records import Records
 
 from random import randint
 
@@ -233,6 +234,7 @@ class Game1(Scene):
                     pg.quit()
 
             # mueve asteroides y comprueba si chocan con la nave
+            # TODO: añade mas obstaculos
             if self.space_ship.hull_damage.destroyed == False:
                 self.big_asteroid.update()
                 self.small_asteroid.update()
@@ -497,7 +499,7 @@ class Game2(Scene):
                     if event.key == pg.K_SPACE:
                         if self.score.win == True and self.landing_complete == True:
                             return
-                    if event.key == pg.K_r:
+                    if event.key == pg.K_r and self.score.win != True:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
 
@@ -558,6 +560,17 @@ class Game2(Scene):
 
 
 class HallOfFame(Scene):
+    def __init__(self, display):
+        self.clock = pg.time.Clock()
+        self.records = Records()
+        self.score1 = Scoreboard1()
+        self.score2 = Scoreboard2()
+        self.hits = HullPoints()
+
+    def calc_total_points(self):
+        # Calcula la puntuacion total
+        self.totalgame_points = self.score1 + self.score2 - self.hits.points
+
     def main_loop(self):
         while True:
             for event in pg.event.get():
@@ -569,4 +582,12 @@ class HallOfFame(Scene):
                     print("Exiting")
                     pg.quit()
             self.display.fill(C_GREEN)
+
+            self.calc_total_points()
+            self.records.lowest_score()
+
+            if self.totalgame_points > self.records.lowest_score():
+                self.records.insert_record()
+
             pg.display.flip()
+            self.clock.tick(FPS)

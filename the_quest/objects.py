@@ -4,6 +4,7 @@ import pygame as pg
 from pygame.sprite import Sprite
 
 from . import *
+from .records import Records
 
 from random import randint
 
@@ -98,9 +99,11 @@ class SpaceShip(Sprite):
     def hit_hull(self):
         self.hull_damage.points += 1
 
-    def rot_center(self):  # FIXME Rota demasiado rapido
-        self.image = pg.transform.rotate(self.image, 180)
+    def rot_center(self):
+        if self.angle <= 179:
+            self.angle += 3 % 180
         self.rect = self.image.get_rect(center=self.rect.center)
+        self.image = pg.transform.rotate(self.image, self.angle)
 
 
 class BigAsteroid(Sprite):
@@ -285,6 +288,7 @@ class Scoreboard2:
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
         if self.win == True:
+            # FIXME: que los textos aparezcan en el momento adecuado (mejor creo una clase aparte)
             text1 = pg.font.Font.render(
                 self.typography_endgame, "¡Lo has conseguido! Aterrizando...", True, C_YELLOW)
 
@@ -354,3 +358,38 @@ class Planet(Sprite):
         if self.rect.x <= WIDTH/2:
             self.planet_in_position = True
             self.rect.x = WIDTH/2
+
+
+class RecordsTexts:
+    def __init__(self):
+        self.records = Records()
+        pg.font.init()
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography = pg.font.Font(font_file, 50)
+
+    def load_records(self):
+        self.records.load()
+
+    def draw(self):
+        text_title = pg.font.Font.render(
+            self.typography, "RÉCORDS", True, C_YELLOW)
+        text_record1 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record2 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record3 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record4 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record5 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record6 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record7 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record8 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record9 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
+        text_record10 = pg.font.Font.render(
+            self.typography, "", True, C_YELLOW)
