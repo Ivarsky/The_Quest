@@ -4,7 +4,6 @@ import pygame as pg
 
 from . import *
 from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, RecordsTexts, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
-from .records import Records
 
 from random import randint
 
