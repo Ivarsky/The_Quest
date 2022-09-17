@@ -1,3 +1,4 @@
+import csv
 import os
 
 import pygame as pg
@@ -100,7 +101,7 @@ class SpaceShip(Sprite):
         self.hull_damage.points += 1
 
     def rot_center(self):
-        if self.angle <= 179:
+        if self.angle < 180:
             self.angle += 3 % 180
         self.rect = self.image.get_rect(center=self.rect.center)
         self.image = pg.transform.rotate(self.image, self.angle)
@@ -361,35 +362,36 @@ class Planet(Sprite):
 
 
 class RecordsTexts:
+    filename = "records.csv"
+    dir_path = os.path.dirname(
+        os.path.realpath(__file__))
+
     def __init__(self):
         self.records = Records()
         pg.font.init()
         font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
-        self.typography = pg.font.Font(font_file, 50)
+        self.typography = pg.font.Font(font_file, 10)
+        self.data_path = os.path.join(
+            os.path.dirname(self.dir_path), "data")
+        self.file_path = os.path.join(self.data_path, self.filename)
+        self.list_of_records = []
+        self.load_records()
 
     def load_records(self):
-        self.records.load()
+        with open(self.file_path, "r") as read_records:
+            csv_reader = csv.reader(read_records)
+            self.list_of_records = list(csv_reader)
 
-    def draw(self):
-        text_title = pg.font.Font.render(
-            self.typography, "RÉCORDS", True, C_YELLOW)
-        text_record1 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record2 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record3 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record4 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record5 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record6 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record7 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record8 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record9 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
-        text_record10 = pg.font.Font.render(
-            self.typography, "", True, C_YELLOW)
+    def draw(self, screen):
+        posy_increment = 0.10
+        line_counter = 0
+        for line in self.list_of_records:
+            line_counter += 1
+            text = pg.font.Font.render(
+                self.typography, str(line), True, C_YELLOW)
+            pos_x = (WIDTH - text.get_width())/2
+            pos_y = (HEIGHT * posy_increment)
+            pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+            posy_increment += 0.10
+        if posy_increment >= 1:
+            posy_increment = 0.10

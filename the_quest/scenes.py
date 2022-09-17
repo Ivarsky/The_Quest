@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, RecordsTexts, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 from .records import Records
 
 from random import randint
@@ -561,15 +561,19 @@ class Game2(Scene):
 
 class HallOfFame(Scene):
     def __init__(self, display):
+        self.display = pg.display.set_mode(
+            (WIDTH, HEIGHT))
         self.clock = pg.time.Clock()
-        self.records = Records()
-        self.score1 = Scoreboard1()
-        self.score2 = Scoreboard2()
-        self.hits = HullPoints()
+        #self.records = Records()
+        #self.score1 = Scoreboard1()
+        #self.score2 = Scoreboard2()
+        #self.hits = HullPoints()
+        #self.recordstexts = RecordsTexts()
 
-    def calc_total_points(self):
+    # def calc_total_points(self):
         # Calcula la puntuacion total
-        self.totalgame_points = self.score1 + self.score2 - self.hits.points
+        # self.totalgame_points = self.score1.points + \
+        #self.score2.points - self.hits.points
 
     def main_loop(self):
         while True:
@@ -581,13 +585,14 @@ class HallOfFame(Scene):
                 if event.type == pg.QUIT:
                     print("Exiting")
                     pg.quit()
-            self.display.fill(C_GREEN)
+            self.display.fill(C_BLUE)
 
-            self.calc_total_points()
-            self.records.lowest_score()
+            # self.calc_total_points(self)
 
-            if self.totalgame_points > self.records.lowest_score():
-                self.records.insert_record()
+            # if self.totalgame_points > self.records.lowest_score():
+            # self.records.insert_record()
+
+            # self.recordstexts.draw(self)
 
             pg.display.flip()
             self.clock.tick(FPS)
