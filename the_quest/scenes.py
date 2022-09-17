@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, RecordsTexts, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 
 from random import randint
 
@@ -563,16 +563,11 @@ class HallOfFame(Scene):
         self.display = pg.display.set_mode(
             (WIDTH, HEIGHT))
         self.clock = pg.time.Clock()
-        #self.records = Records()
-        #self.score1 = Scoreboard1()
-        #self.score2 = Scoreboard2()
-        #self.hits = HullPoints()
-        #self.recordstexts = RecordsTexts()
+        self.totalgame_points = 0
 
-    # def calc_total_points(self):
-        # Calcula la puntuacion total
-        # self.totalgame_points = self.score1.points + \
-        #self.score2.points - self.hits.points
+    def total_game_calc(self):
+        self.totalgame_points = self.records.calc_game
+        print(self.total_game_calc)
 
     def main_loop(self):
         while True:
@@ -592,6 +587,8 @@ class HallOfFame(Scene):
             # self.records.insert_record()
 
             # self.recordstexts.draw(self)
+            # self.total_game_calc()
+            print(self.totalgame_points)
 
             pg.display.flip()
             self.clock.tick(FPS)

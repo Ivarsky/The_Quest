@@ -5,7 +5,7 @@ import pygame as pg
 from pygame.sprite import Sprite
 
 from . import *
-from .DBManage import DBManager
+from .records import DBManager
 
 from random import randint
 
@@ -361,6 +361,7 @@ class Planet(Sprite):
             self.rect.x = WIDTH/2
 
 
+'''
 class Records:  # FIXME: adaptar para sqlite
 
     filename = "records.db"
@@ -436,3 +437,4 @@ class Records:  # FIXME: adaptar para sqlite
         for count in range(MAX_RECORDS):
             self.game_records.append(['---', 0])
         self.save()
+'''
