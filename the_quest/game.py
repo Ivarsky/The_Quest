@@ -19,6 +19,7 @@ class TheQuest:
         icon = pg.image.load(os.path.join(
             "resources", "player", "sprites", "player1.png"))
         pg.display.set_icon(icon)
+        self.clock = pg.time.Clock()
         pg.mixer.music.load(os.path.join(
             "resources", "music", "exports", "space-asteroids.wav"))
         pg.mixer.music.play(-1)

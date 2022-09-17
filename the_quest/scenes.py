@@ -11,6 +11,7 @@ from random import randint
 class Scene:
     def __init__(self, screen: pg.Surface):
         self.display = screen
+        self.clock = pg.time.Clock()
 
     def main_loop(self):
         pass
@@ -25,7 +26,6 @@ class Front(Scene):
         self.background = pg.transform.scale2x(image_background)
         self.font_file = os.path.join(
             "resources", "fonts", "PublicPixel-z84yD.ttf")
-        self.clock = pg.time.Clock()
 
     def main_loop(self):
         while True:
@@ -87,7 +87,6 @@ class Story(Scene):
         self.background = pg.transform.scale2x(image_background)
         self.font_file = os.path.join(
             "resources", "fonts", "PublicPixel-z84yD.ttf")
-        self.clock = pg.time.Clock()
 
     def main_loop(self):
         while True:
@@ -142,12 +141,9 @@ class Story(Scene):
 
 class Game1(Scene):
 
-    def __init__(self, display):
-        self.display = pg.display.set_mode(
-            (WIDTH, HEIGHT))
+    def __init__(self, screen: pg.Surface):
+        super().__init__(screen)
         self.space_ship = SpaceShip()
-
-        self.clock = pg.time.Clock()
         self.big_asteroid = BigAsteroid()
         self.small_asteroid = SmallAsteroid()
         self.score = Scoreboard1()
@@ -286,7 +282,6 @@ class Story2(Scene):
 
         self.font_file = os.path.join(
             "resources", "fonts", "PublicPixel-z84yD.ttf")
-        self.clock = pg.time.Clock()
 
     def main_loop(self):
         while True:
@@ -353,9 +348,8 @@ class Story2(Scene):
 
 class Game2(Scene):
 
-    def __init__(self, display):
-        self.display = pg.display.set_mode(
-            (WIDTH, HEIGHT))
+    def __init__(self, screen: pg.Surface):
+        super().__init__(screen)
 
         image_background = pg.image.load(os.path.join(
             "resources", "background", "layered", "bg-back.png"))
@@ -366,7 +360,6 @@ class Game2(Scene):
             image_background_stars, (WIDTH, HEIGHT))
 
         self.space_ship = SpaceShip()
-        self.clock = pg.time.Clock()
         self.big_asteroid = BigAsteroid()
         self.small_asteroid = SmallAsteroid()
         self.big_enemy = BigAlienShip()
@@ -559,10 +552,8 @@ class Game2(Scene):
 
 
 class HallOfFame(Scene):
-    def __init__(self, display):
-        self.display = pg.display.set_mode(
-            (WIDTH, HEIGHT))
-        self.clock = pg.time.Clock()
+    def __init__(self, screen: pg.Surface):
+        super().__init__(screen)
         self.totalgame_points = 0
 
     def total_game_calc(self):
