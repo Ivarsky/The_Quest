@@ -208,6 +208,10 @@ class Game1(Scene):
         self.small_asteroid.rect.x = WIDTH
         self.small_asteroid.rect.y = randint(0, HEIGHT)
 
+    def save_gamepoints_and_hits(self):
+        self.gamepoints += self.score.points
+        self.gamehits += self.space_ship.hull_damage.points
+
     def main_loop(self):
         print("Starting game!")
 
@@ -227,6 +231,10 @@ class Game1(Scene):
                 if event.type == pg.QUIT:
                     print("Exiting")
                     pg.quit()
+
+            # si se gana guarda puntos
+            if self.score.win == True:
+                self.save_gamepoints_and_hits()
 
             # mueve asteroides y comprueba si chocan con la nave
             # TODO: añade mas obstaculos
@@ -479,6 +487,10 @@ class Game2(Scene):
         if self.space_ship.rect.x >= PLANET_WIDTH+349:
             self.landing_complete = True
 
+    def save_gamepoints_and_hits(self):
+        self.gamepoints += self.score.points
+        self.gamehits += self.space_ship.hull_damage.points
+
     def main_loop(self):
         print("Starting game!")
 
@@ -498,6 +510,10 @@ class Game2(Scene):
                 if event.type == pg.QUIT:
                     print("Exiting")
                     pg.quit()
+
+            # si se gana guarda puntos
+            if self.score.win == True:
+                self.save_gamepoints_and_hits()
 
             # mueve obstaculos y comprueba si chocan con la nave
             if self.space_ship.hull_damage.destroyed == False:
@@ -557,8 +573,8 @@ class HallOfFame(Scene):
         self.totalgame_points = 0
 
     def total_game_calc(self):
-        self.totalgame_points = self.records.calc_game
-        print(self.total_game_calc)
+        self.totalgame_points = self.gamepoints - self.gamehits
+        print(self.totalgame_points)
 
     def main_loop(self):
         while True:
@@ -579,7 +595,6 @@ class HallOfFame(Scene):
 
             # self.recordstexts.draw(self)
             # self.total_game_calc()
-            print(self.totalgame_points)
 
             pg.display.flip()
             self.clock.tick(FPS)

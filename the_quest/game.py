@@ -23,14 +23,16 @@ class TheQuest:
         pg.mixer.music.load(os.path.join(
             "resources", "music", "exports", "space-asteroids.wav"))
         pg.mixer.music.play(-1)
+        self.gamepoints = 0
+        self.gamehits = 0
 
         self.scenes = [
-            Front(self.display),
-            Story(self.display),
-            Game1(self.display),
-            Story2(self.display),
-            Game2(self.display),
-            HallOfFame(self.display),
+            Front(self.display, self.gamepoints, self.gamehits),
+            Story(self.display, self.gamepoints, self.gamehits),
+            Game1(self.display, self.gamepoints, self.gamehits),
+            Story2(self.display, self.gamepoints, self.gamehits),
+            Game2(self.display, self.gamepoints, self.gamehits),
+            HallOfFame(self.display, self.gamepoints, self.gamehits),
         ]
 
     def play(self):
