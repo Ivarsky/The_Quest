@@ -24,7 +24,6 @@ class TheQuest:
             "resources", "music", "exports", "space-asteroids.wav"))
         pg.mixer.music.play(-1)
         self.gamepoints = 0
-        self.gamehits = 0
 
         self.scenes = [
             Front(self.display),
@@ -39,7 +38,12 @@ class TheQuest:
         print("Game open")
 
         for scene in self.scenes:
-            scene.main_loop()
+            if isinstance(scene, HallOfFame):
+                scene.total_gamepoints = self.gamepoints
+
+            puntos = scene.main_loop()
+            if puntos:
+                self.gamepoints += puntos
 
 
 if __name__ == "__main__":

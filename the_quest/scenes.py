@@ -1,3 +1,4 @@
+from bdb import Breakpoint
 from random import randint
 import os
 
@@ -96,7 +97,7 @@ class Story(Scene):
                     #        print("Exiting")
                     #        return
                     if event.key == pg.K_SPACE:
-                        return
+                        return None
                 if event.type == pg.QUIT:
                     print("Exiting!")
                     pg.quit()
@@ -208,9 +209,9 @@ class Game1(Scene):
         self.small_asteroid.rect.x = WIDTH
         self.small_asteroid.rect.y = randint(0, HEIGHT)
 
-    def save_gamepoints_and_hits(self):
-        self.gamepoints += self.score.points
-        self.gamehits += self.space_ship.hull_damage.points
+    # def save_gamepoints_and_hits(self):
+        #self.gamepoints += self.score.points
+        #self.gamehits += self.space_ship.hull_damage.points
 
     def main_loop(self):
         print("Starting game!")
@@ -223,7 +224,7 @@ class Game1(Scene):
                     #        return
                     if event.key == pg.K_SPACE:
                         # if self.score.win == True:
-                        return
+                        return self.score.points
                     if event.key == pg.K_r:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
@@ -233,8 +234,8 @@ class Game1(Scene):
                     pg.quit()
 
             # si se gana guarda puntos
-            if self.score.win == True:
-                self.save_gamepoints_and_hits()
+            # if self.score.win == True:
+                # self.save_gamepoints_and_hits()
 
             # mueve asteroides y comprueba si chocan con la nave
             # TODO: añade mas obstaculos
@@ -271,6 +272,8 @@ class Game1(Scene):
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
 
+            # TODO: dibuja puntuacion juego1
+
             pg.display.flip()
             self.clock.tick(FPS)
 
@@ -299,7 +302,7 @@ class Story2(Scene):
                     #        print("Exiting")
                     #        return
                     if event.key == pg.K_SPACE:
-                        return
+                        return None
                 if event.type == pg.QUIT:
                     print("Exiting!")
                     pg.quit()
@@ -312,6 +315,7 @@ class Story2(Scene):
             self.draw_text3()
             pg.display.flip()
             self.clock.tick(FPS)
+        return None
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
@@ -502,7 +506,7 @@ class Game2(Scene):
                     #        return
                     if event.key == pg.K_SPACE:
                         if self.score.win == True and self.landing_complete == True:
-                            return
+                            return self.score.points
                     if event.key == pg.K_r and self.score.win != True:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
@@ -563,6 +567,8 @@ class Game2(Scene):
             if self.planet.planet_in_position == True:
                 self.ship_landing()
 
+            # TODO: dibuja puntuacion juego2
+
             pg.display.flip()
             self.clock.tick(FPS)
 
@@ -578,7 +584,7 @@ class HallOfFame(Scene):
         self.typography_title = pg.font.Font(font_file, 30)
         self.typography_records = pg.font.Font(font_file, 18)
         # TODO: que acumule los puntos de toda la partida
-        self.total_gamepoints = 100  # puntos metidos para poder trabajar con db
+        self.total_gamepoints = 0  # puntos metidos para poder trabajar con db
 
         self.database = DBManager(DB_ROUTE)
         self.records = []
@@ -631,11 +637,20 @@ class HallOfFame(Scene):
             pos_y1 = b * render_points.get_height() + begin_lines
             self.display.blit(points[b], (pos_x1, pos_y1))
 
-            # def total_game_calc(self):
-            #self.totalgame_points = self.gamepoints - self.gamehits
-            # print(self.totalgame_points)
+    def check_if_top10(self):
+        lowest = self.database.lowest_top10_score()
+        if self.total_gamepoints > lowest:
+            return True
+        else:
+            return False
 
     def main_loop(self):
+
+        if self.check_if_top10() == True:
+            name = "santi"
+
+            self.database.save(name, self.total_gamepoints)
+
         self.load()
 
         for name in self.names:
@@ -646,7 +661,7 @@ class HallOfFame(Scene):
             rendertext2 = self.typography_records.render(
                 str(score), True, C_YELLOW)
             self.points_render.append(rendertext2)
-
+            pass
         while True:
             for event in pg.event.get():
                 # if event.type == pg.KEYDOWN:

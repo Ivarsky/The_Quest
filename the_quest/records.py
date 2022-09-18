@@ -14,7 +14,7 @@ class DBManager:
 
     def load(self):
 
-        query = "SELECT id, name, TotalScore FROM records ORDER BY TotalScore DESC"
+        query = "SELECT id, name, TotalScore FROM records ORDER BY TotalScore DESC LIMIT 10"
 
         # 1. conectar con la database
         connection = sqlite3.connect(self.route)
@@ -59,22 +59,20 @@ class DBManager:
 
         return self.records
 
-    def lowest_score(self):
+    def lowest_top10_score(self):
         # obtenemos el record mas bajo de todos
         scores_of_records = []
         records = self.load()
         for record in records:
-            record.pop("id")
-            record.pop("name")
-            for score in record.scores():
-                scores_of_records.append(score)
+            scores_of_records.append(record["TotalScore"])
 
-        if len(scores_of_records) == 0 or len(scores_of_records) < 10:
-            pass
-
-        else:
+        if len(scores_of_records) > 10:
             lowest_score = min(scores_of_records)
             return lowest_score
+        else:
+            # si hay menos de 10 puntuaciones guardadas en la base de datos, devuelve un 0
+            # permitiendo cualquier nueva puntuacion entrar a la lista de records
+            return 0
 
     def update(self, name, TotalScore):
         query = "UPDATE records SET name = (?), TotalScore = (?) WHERE TotalScore = (?)"
@@ -85,7 +83,7 @@ class DBManager:
         connection.close()
 
     def save(self, name, TotalScore):
-        query = "UPDATE records SET name = (?), TotalScore = (?) WHERE TotalScore = (?)"
+        query = "INSERT INTO records (name, TotalScore) VALUES (?, ?)"
         connection = sqlite3.connect(self.route)
         cursor = connection.cursor()
         cursor.execute(query, (name, TotalScore))
