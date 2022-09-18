@@ -27,12 +27,12 @@ class TheQuest:
         self.gamehits = 0
 
         self.scenes = [
-            Front(self.display, self.gamepoints, self.gamehits),
-            Story(self.display, self.gamepoints, self.gamehits),
-            Game1(self.display, self.gamepoints, self.gamehits),
-            Story2(self.display, self.gamepoints, self.gamehits),
-            Game2(self.display, self.gamepoints, self.gamehits),
-            HallOfFame(self.display, self.gamepoints, self.gamehits),
+            Front(self.display),
+            Story(self.display),
+            Game1(self.display),
+            Story2(self.display),
+            Game2(self.display),
+            HallOfFame(self.display),
         ]
 
     def play(self):

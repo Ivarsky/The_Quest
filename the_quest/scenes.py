@@ -3,7 +3,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, HullPoints, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 
 from random import randint
 
@@ -487,9 +487,9 @@ class Game2(Scene):
         if self.space_ship.rect.x >= PLANET_WIDTH+349:
             self.landing_complete = True
 
-    def save_gamepoints_and_hits(self):
-        self.gamepoints += self.score.points
-        self.gamehits += self.space_ship.hull_damage.points
+    # def save_gamepoints_and_hits(self):
+        #self.gamepoints += self.score.points
+        #self.gamehits += self.space_ship.hull_damage.points
 
     def main_loop(self):
         print("Starting game!")
@@ -512,8 +512,8 @@ class Game2(Scene):
                     pg.quit()
 
             # si se gana guarda puntos
-            if self.score.win == True:
-                self.save_gamepoints_and_hits()
+            # if self.score.win == True:
+                # self.save_gamepoints_and_hits()
 
             # mueve obstaculos y comprueba si chocan con la nave
             if self.space_ship.hull_damage.destroyed == False:
@@ -570,11 +570,12 @@ class Game2(Scene):
 class HallOfFame(Scene):
     def __init__(self, screen: pg.Surface):
         super().__init__(screen)
-        self.totalgame_points = 0
+        # TODO: que acumule los puntos de toda la partida
+        self.total_gamepoints = 100  # puntos metidos para poder trabajar con db
 
-    def total_game_calc(self):
-        self.totalgame_points = self.gamepoints - self.gamehits
-        print(self.totalgame_points)
+    # def total_game_calc(self):
+        #self.totalgame_points = self.gamepoints - self.gamehits
+        # print(self.totalgame_points)
 
     def main_loop(self):
         while True:
