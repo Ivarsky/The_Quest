@@ -20,3 +20,5 @@ C_YELLOW = (255, 255, 0)
 
 
 WIN_SCORE = 10
+
+DB_ROUTE = "data/records.db"

@@ -12,7 +12,7 @@ class DBManager:
     def __init__(self, route):
         self.route = route
 
-    def load(self, query):
+    def load(self):
 
         query = "SELECT id, name, TotalScore FROM records ORDER BY TotalScore DESC"
 

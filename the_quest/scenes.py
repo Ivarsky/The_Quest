@@ -1,11 +1,11 @@
+from random import randint
 import os
 
 import pygame as pg
 
 from . import *
 from .objects import BigAlienShip, BigAsteroid, Explosion, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
-
-from random import randint
+from .records import DBManager
 
 
 class Scene:
@@ -570,14 +570,83 @@ class Game2(Scene):
 class HallOfFame(Scene):
     def __init__(self, screen: pg.Surface):
         super().__init__(screen)
+        image_background = pg.image.load(os.path.join(
+            "resources", "background", "bg-preview-big.png"))
+        self.background = pg.transform.scale2x(image_background)
+        pg.font.init()
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography_title = pg.font.Font(font_file, 30)
+        self.typography_records = pg.font.Font(font_file, 18)
         # TODO: que acumule los puntos de toda la partida
         self.total_gamepoints = 100  # puntos metidos para poder trabajar con db
 
-    # def total_game_calc(self):
-        #self.totalgame_points = self.gamepoints - self.gamehits
-        # print(self.totalgame_points)
+        self.database = DBManager(DB_ROUTE)
+        self.records = []
+
+        self.names = []
+        self.points = []
+        self.names_render = []
+        self.points_render = []
+
+    def draw_background(self):
+        self.display.blit(self.background, (0, 0))
+
+    def load(self):
+        self.records = self.database.load()
+        for record in self.records:
+            record.pop("id")
+            for value in record.values():
+                if isinstance(value, str):
+                    self.names.append(value)
+                else:
+                    self.points.append(value)
+
+    def draw_records(self, name, points, render_names, render_points):
+        # pintado de titulos:
+        text_title_name = pg.font.Font.render(
+            self.typography_title, "NOMBRE", True, C_YELLOW)
+        pos_x_title_name = (WIDTH - text_title_name.get_width())/4
+        pos_y_title_name = LATERAL_MARGIN
+        self.display.blit(
+            text_title_name, (pos_x_title_name, pos_y_title_name))
+
+        text_title_score = pg.font.Font.render(
+            self.typography_title, "PUNTOS", True, C_YELLOW)
+        pos_x_title_score = (
+            (WIDTH - text_title_score.get_width())/4) + WIDTH / 2
+        pos_y_title_score = LATERAL_MARGIN
+        self.display.blit(
+            text_title_score, (pos_x_title_score, pos_y_title_score))
+
+        # pintado de records:
+        begin_lines = 200
+
+        for a in range(len(name)):
+            pos_x = (WIDTH - render_names.get_width()) / 4
+            pos_y = a * render_names.get_height() + begin_lines
+            self.display.blit(name[a], (pos_x, pos_y))
+
+        for b in range(len(points)):
+            pos_x1 = ((WIDTH - render_points.get_width())/4) + WIDTH / 2
+            pos_y1 = b * render_points.get_height() + begin_lines
+            self.display.blit(points[b], (pos_x1, pos_y1))
+
+            # def total_game_calc(self):
+            #self.totalgame_points = self.gamepoints - self.gamehits
+            # print(self.totalgame_points)
 
     def main_loop(self):
+        self.load()
+
+        for name in self.names:
+            rendertext = self.typography_records.render(name, True, C_YELLOW)
+            self.names_render.append(rendertext)
+
+        for score in self.points:
+            rendertext2 = self.typography_records.render(
+                str(score), True, C_YELLOW)
+            self.points_render.append(rendertext2)
+
         while True:
             for event in pg.event.get():
                 # if event.type == pg.KEYDOWN:
@@ -588,6 +657,10 @@ class HallOfFame(Scene):
                     print("Exiting")
                     pg.quit()
             self.display.fill(C_BLUE)
+            self.draw_background()
+
+            self.draw_records(self.names_render,
+                              self.points_render, rendertext, rendertext2)
 
             # self.calc_total_points(self)
 
