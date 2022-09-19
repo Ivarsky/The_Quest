@@ -24,7 +24,6 @@ class HullPoints:
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
-            # TODO: que la nave desaparezca al explotar
             print("Ship Destroyed!, GAME OVER")
             self.destroyed = True
         else:
