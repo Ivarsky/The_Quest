@@ -37,14 +37,14 @@ class HullPoints:
 
     def draw(self, screen):
         text = pg.font.Font.render(
-            self.typography, "HP "+str(3 - self.points), True, C_WHITE)
+            self.typography, "HP "+str(3 - self.points), True, C_YELLOW)
         pos_x = (WIDTH - text.get_width())/8
         pos_y = LATERAL_MARGIN
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
         if self.destroyed == True:
             text = pg.font.Font.render(
-                self.typography_endgame, "Game Over", True, C_WHITE)
+                self.typography_endgame, "Game Over", True, C_RED)
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
