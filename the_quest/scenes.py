@@ -209,9 +209,8 @@ class Game1(Scene):
         self.small_asteroid.rect.x = WIDTH
         self.small_asteroid.rect.y = randint(0, HEIGHT)
 
-    # def save_gamepoints_and_hits(self):
-        #self.gamepoints += self.score.points
-        #self.gamehits += self.space_ship.hull_damage.points
+    def save_gamepoints_and_hits(self):
+        self.gamepoints = self.score.points - self.space_ship.hull_damage.points
 
     def main_loop(self):
         print("Starting game!")
@@ -224,7 +223,9 @@ class Game1(Scene):
                     #        return
                     if event.key == pg.K_SPACE:
                         # if self.score.win == True:
-                        return self.score.points
+                        self.save_gamepoints_and_hits()
+
+                        return self.gamepoints
                     if event.key == pg.K_r:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
@@ -491,6 +492,9 @@ class Game2(Scene):
         if self.space_ship.rect.x >= PLANET_WIDTH+349:
             self.landing_complete = True
 
+    def calculate_points(self):
+        self.gamepoints = self.score.points - self.space_ship.hull_damage.points
+
     # def save_gamepoints_and_hits(self):
         #self.gamepoints += self.score.points
         #self.gamehits += self.space_ship.hull_damage.points
@@ -506,7 +510,8 @@ class Game2(Scene):
                     #        return
                     if event.key == pg.K_SPACE:
                         if self.score.win == True and self.landing_complete == True:
-                            return self.score.points
+                            self.calculate_points()
+                            return self.gamepoints
                     if event.key == pg.K_r and self.score.win != True:
                         self.score.initialize()
                         self.space_ship.hull_damage.initialize()
@@ -647,7 +652,7 @@ class HallOfFame(Scene):
     def main_loop(self):
 
         if self.check_if_top10() == True:
-            name = "santi"
+            name = "elon musk"
 
             self.database.save(name, self.total_gamepoints)
 
@@ -676,14 +681,6 @@ class HallOfFame(Scene):
 
             self.draw_records(self.names_render,
                               self.points_render, rendertext, rendertext2)
-
-            # self.calc_total_points(self)
-
-            # if self.totalgame_points > self.records.lowest_score():
-            # self.records.insert_record()
-
-            # self.recordstexts.draw(self)
-            # self.total_game_calc()
 
             pg.display.flip()
             self.clock.tick(FPS)

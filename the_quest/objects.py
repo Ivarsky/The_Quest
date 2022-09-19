@@ -359,3 +359,59 @@ class Planet(Sprite):
         if self.rect.x <= WIDTH/2:
             self.planet_in_position = True
             self.rect.x = WIDTH/2
+
+
+class InputBox():
+    def __init__(self, screen: pg.Surface, text_color="white", background_color="black", title=""):
+        pg.font.init()
+        font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
+        self.typography = pg.font.Font(font_file, 20)
+        self.text = ""
+        self.title = title
+        self.background_color = background_color
+        self.text_color = text_color
+        self.display = screen
+        self.padding = 30
+        self.create_fixed_items()
+
+    def create_fixed_items(self):
+        # titulo
+        self.titulo = self.typography.render(
+            "Nuevo record!, introduce tu nombre: ", True, self.text_color, self.background_color)
+        self.x_title = (WIDTH-self.title.get_width())//2
+        self.y_title = (HEIGHT-self.title.get_height()//2)
+
+        # rectangulo de fondo:
+        x_background = self.x_title - self.padding
+        y_background = self.y_title = self.padding
+        w_background = self.title.get_width() + self.padding*2
+        h_background = self.title.get_height() * 2 + self.padding*2
+        self.background = pg.Rect(
+            x_background, y_background, w_background, h_background)
+
+    def draw(self):
+        pg.draw.rect(self.display, self.background_color, self.background)
+        self.display.blit(self.title, (self.x_title, self.y_title))
+
+        text_surface = self.typography.render(
+            self.text, True, self.text_color, self.background_color)
+        pos_x = self.x_title
+        pos_y = self.y_title + self.title.get_height()
+        self.display.blit(text_surface, (pos_x, pos_y))
+
+    def get_text(self):
+        leave = False
+        while not leave:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_BACKSPACE and len(self.text) > 0:
+                        self.text = self.text[:-1]
+                    elif event.key == pg.K_RETURN:
+                        leave = True
+                    else:
+                        self.text += event.unicode
+            self.draw()
+            pg.display.flip()
+        return self.text
