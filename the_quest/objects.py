@@ -376,16 +376,16 @@ class InputBox():
 
     def create_fixed_items(self):
         # titulo
-        self.titulo = self.typography.render(
+        self.title = self.typography.render(
             "Nuevo record!, introduce tu nombre: ", True, self.text_color, self.background_color)
         self.x_title = (WIDTH-self.title.get_width())//2
-        self.y_title = (HEIGHT-self.title.get_height()//2)
+        self.y_title = (HEIGHT-self.title.get_height())//2
 
         # rectangulo de fondo:
         x_background = self.x_title - self.padding
-        y_background = self.y_title = self.padding
-        w_background = self.title.get_width() + self.padding*2
-        h_background = self.title.get_height() * 2 + self.padding*2
+        y_background = self.y_title - self.padding
+        w_background = self.title.get_width() + self.padding * 2
+        h_background = self.title.get_height() * 2 + self.padding * 2
         self.background = pg.Rect(
             x_background, y_background, w_background, h_background)
 

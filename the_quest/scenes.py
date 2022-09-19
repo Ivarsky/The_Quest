@@ -5,7 +5,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, InputBox, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 from .records import DBManager
 
 
@@ -652,7 +652,8 @@ class HallOfFame(Scene):
     def main_loop(self):
 
         if self.check_if_top10() == True:
-            name = "elon musk"
+            inputbox = InputBox(self.display)
+            name = inputbox.get_text()
 
             self.database.save(name, self.total_gamepoints)
 
