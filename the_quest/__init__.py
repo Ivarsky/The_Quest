@@ -19,6 +19,6 @@ C_BLUE = (00, 00, 99)
 C_YELLOW = (255, 255, 0)
 
 
-WIN_SCORE = 10
+WIN_SCORE = 20
 
 DB_ROUTE = "data/records.db"

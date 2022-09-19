@@ -154,7 +154,9 @@ class BigAlienShip(Sprite):
         self.rect = self.image.get_rect(x=self.x, y=self.y)
         self.speed_ship = ASTEROID_SPEED * 3
 
-    def update(self):
+    def update(self, game1):
+        if game1 == True:
+            self.speed_ship = ASTEROID_SPEED * 1.25
         self.rect.x = self.rect.x - self.speed_ship
         self.iteration += 1
         if self.iteration == self.limit_iteration:
@@ -185,7 +187,9 @@ class SmallAlienShip(Sprite):
         self.rect = self.image.get_rect(x=self.x, y=self.y)
         self.speed_small_ship = ASTEROID_SPEED * 4
 
-    def update(self):
+    def update(self, game1):
+        if game1 == True:
+            self.speed_small_ship = ASTEROID_SPEED * 2
         self.rect.x = self.rect.x - self.speed_small_ship
         self.iteration += 1
         if self.iteration == self.limit_iteration:
