@@ -66,13 +66,13 @@ class DBManager:
         for record in records:
             scores_of_records.append(record["TotalScore"])
 
-        if len(scores_of_records) > 10:
-            lowest_score = min(scores_of_records)
-            return lowest_score
-        else:
+        if len(scores_of_records) < 10:
             # si hay menos de 10 puntuaciones guardadas en la base de datos, devuelve un 0
             # permitiendo cualquier nueva puntuacion entrar a la lista de records
             return 0
+
+        lowest_score = min(scores_of_records)
+        return lowest_score
 
     def update(self, name, TotalScore):
         query = "UPDATE records SET name = (?), TotalScore = (?) WHERE TotalScore = (?)"
