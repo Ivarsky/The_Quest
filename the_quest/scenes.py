@@ -644,6 +644,7 @@ class HallOfFame(Scene):
 
     def check_if_top10(self):
         lowest = self.database.lowest_top10_score()
+        # puede entrar un 0 desde la funcion de database, dejando entrar cualquier puntuacion
         if self.total_gamepoints > lowest:
             return True
         else:
