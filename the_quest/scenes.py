@@ -5,7 +5,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, Hit, InputBox, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, EndGame2Texts, Explosion, Hit, InputBox, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 from .records import DBManager
 
 
@@ -396,6 +396,7 @@ class Game2(Scene):
         self.small_enemy = SmallAlienShip()
         self.score = Scoreboard2()
         self.planet = Planet()
+        self.endgame_text = EndGame2Texts()
 
         self.explosion_group = pg.sprite.Group()
         self.hit_group = pg.sprite.Group()
@@ -556,7 +557,6 @@ class Game2(Scene):
                     #        return
                     if event.key == pg.K_SPACE:
                         if self.score.win == True and self.landing_complete == True:
-                            self.calculate_points()
                             return self.gamepoints
                     if event.key == pg.K_r and self.score.win != True:
                         self.score.initialize()
@@ -615,14 +615,18 @@ class Game2(Scene):
 
             # dibuja planeta
             if self.score.win == True:
+                self.calculate_points()
                 self.display.blit(self.planet.image, self.planet.rect)
                 self.planet.update()
+                # textos final de partida
+                self.endgame_text.draw_text1(self.display, self.gamepoints)
 
             # aterrizaje de la nave
             if self.planet.planet_in_position == True:
                 self.ship_landing()
 
-            # TODO: dibuja puntuacion juego2
+            if self.landing_complete == True:
+                self.endgame_text.draw_text2(self.display)
 
             pg.display.flip()
             self.clock.tick(FPS)
