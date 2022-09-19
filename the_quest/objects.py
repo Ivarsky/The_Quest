@@ -189,7 +189,7 @@ class SmallAlienShip(Sprite):
 
     def update(self, game1):
         if game1 == True:
-            self.speed_small_ship = ASTEROID_SPEED * 2
+            self.speed_small_ship = ASTEROID_SPEED * 1.50
         self.rect.x = self.rect.x - self.speed_small_ship
         self.iteration += 1
         if self.iteration == self.limit_iteration:
