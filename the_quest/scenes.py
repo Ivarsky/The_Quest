@@ -153,6 +153,7 @@ class Game1(Scene):
         self.background = pg.transform.scale2x(image_background)
         self.explosion_group = pg.sprite.Group()
         self.hit_group = pg.sprite.Group()
+        self.gamepoints = 0
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
@@ -240,8 +241,6 @@ class Game1(Scene):
                     #        return
                     if event.key == pg.K_SPACE:
                         # if self.score.win == True:
-                        self.save_gamepoints_and_hits()
-
                         return self.gamepoints
                     if event.key == pg.K_r:
                         self.score.initialize()
@@ -285,12 +284,14 @@ class Game1(Scene):
             self.hit_group.draw(self.display)
             self.hit_group.update()
 
+            # TODO: dibuja puntuacion juego1
+            if self.score.win == True:
+                self.save_gamepoints_and_hits()
+
             # dibuja los puntos para ganar (asteroides esquivados)
-            self.score.draw(self.display)
+            self.score.draw(self.display, self.gamepoints)
             # dibuja los puntos para perder (golpes a la nave)
             self.space_ship.hull_damage.draw(self.display)
-
-            # TODO: dibuja puntuacion juego1
 
             pg.display.flip()
             self.clock.tick(FPS)

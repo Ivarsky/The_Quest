@@ -224,7 +224,7 @@ class Scoreboard1:
         self.points = self.points + 1
         print(f"{self.points} Asteroids dodged!")
 
-    def draw(self, screen):
+    def draw(self, screen, points):
         text = pg.font.Font.render(
             self.typography, "Puntos "+str(self.points), True, C_YELLOW)
         pos_x = ((WIDTH - text.get_width())/4) + WIDTH/2
@@ -238,6 +238,8 @@ class Scoreboard1:
                 self.typography_endgame, "Ahora emprenderemos nuestro largo viaje, Nova Terra nos espera!", True, C_YELLOW)
             text2 = pg.font.Font.render(
                 self.typography_endgame, "Espacio para continuar", True, C_YELLOW)
+            text3 = pg.font.Font.render(
+                self.typography_endgame, f"Puntuacion partida: {points}", True, C_YELLOW)
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
 
@@ -247,9 +249,13 @@ class Scoreboard1:
             pos_x2 = (WIDTH - text2.get_width())/2
             pos_y2 = pos_y1 + 50
 
+            pos_x3 = (WIDTH - text2.get_width())/2
+            pos_y3 = HEIGHT * 0.10
+
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
             pg.surface.Surface.blit(screen, text1, (pos_x1, pos_y1))
             pg.surface.Surface.blit(screen, text2, (pos_x2, pos_y2))
+            pg.surface.Surface.blit(screen, text3, (pos_x3, pos_y3))
 
 
 class Scoreboard2:
