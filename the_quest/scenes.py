@@ -5,7 +5,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, Explosion, InputBox, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, Explosion, Hit, InputBox, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
 from .records import DBManager
 
 
@@ -152,6 +152,7 @@ class Game1(Scene):
             "resources", "background", "bg-preview-big.png"))
         self.background = pg.transform.scale2x(image_background)
         self.explosion_group = pg.sprite.Group()
+        self.hit_group = pg.sprite.Group()
 
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
@@ -159,6 +160,10 @@ class Game1(Scene):
     def make_explosion(self):
         explosion = Explosion(self.space_ship.rect.x, self.space_ship.rect.y)
         self.explosion_group.add(explosion)
+
+    def make_hit(self):
+        hit = Hit(self.space_ship.rect.x, self.space_ship.rect.y)
+        self.hit_group.add(hit)
 
     def collide(self):
         """
@@ -168,21 +173,33 @@ class Game1(Scene):
         if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
-            self.make_explosion()
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
 
             if not self.space_ship.hull_damage.destroyed:
-                self.make_explosion()
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = self.big_asteroid.rect.y = randint(
                     0, HEIGHT)
         # colision entre asteroide pequeño y nave
         if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
-            self.make_explosion()
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
 
             if not self.space_ship.hull_damage.destroyed:
-                self.make_explosion()
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
                 self.small_asteroid.rect.x = WIDTH
                 self.small_asteroid.rect.y = self.small_asteroid.rect.y = randint(
                     0, HEIGHT)
@@ -234,10 +251,6 @@ class Game1(Scene):
                     print("Exiting")
                     pg.quit()
 
-            # si se gana guarda puntos
-            # if self.score.win == True:
-                # self.save_gamepoints_and_hits()
-
             # mueve asteroides y comprueba si chocan con la nave
             # TODO: añade mas obstaculos
             if self.space_ship.hull_damage.destroyed == False:
@@ -267,6 +280,10 @@ class Game1(Scene):
             # dibuja explosion
             self.explosion_group.draw(self.display)
             self.explosion_group.update()
+
+            # dibuja golpes a la nave
+            self.hit_group.draw(self.display)
+            self.hit_group.update()
 
             # dibuja los puntos para ganar (asteroides esquivados)
             self.score.draw(self.display)
@@ -381,6 +398,7 @@ class Game2(Scene):
         self.planet = Planet()
 
         self.explosion_group = pg.sprite.Group()
+        self.hit_group = pg.sprite.Group()
         self.planet.planet_in_position = False
         self.landing_complete = False
 
@@ -392,6 +410,10 @@ class Game2(Scene):
         explosion = Explosion(self.space_ship.rect.x, self.space_ship.rect.y)
         self.explosion_group.add(explosion)
 
+    def make_hit(self):
+        hit = Hit(self.space_ship.rect.x, self.space_ship.rect.y)
+        self.hit_group.add(hit)
+
     def collide(self):
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
@@ -400,43 +422,67 @@ class Game2(Scene):
         if pg.Rect.colliderect(self.big_asteroid.rect, self.space_ship.rect):
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
-            self.make_explosion()
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
 
             if not self.space_ship.hull_damage.destroyed:
-                self.make_explosion()
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
                 self.big_asteroid.rect.x = WIDTH
                 self.big_asteroid.rect.y = self.big_asteroid.rect.y = randint(
                     0, HEIGHT)
         # colision entre asteroide pequeño y nave
         if pg.Rect.colliderect(self.small_asteroid.rect, self.space_ship.rect):
-            self.make_explosion()
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
 
             if not self.space_ship.hull_damage.destroyed:
-                self.make_explosion()
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
                 self.small_asteroid.rect.x = WIDTH
                 self.small_asteroid.rect.y = self.small_asteroid.rect.y = randint(
                     0, HEIGHT)
 
         if pg.Rect.colliderect(self.big_enemy.rect, self.space_ship.rect):
-            self.make_explosion()
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
 
             if not self.space_ship.hull_damage.destroyed:
-                self.make_explosion()
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
                 self.big_enemy.rect.x = WIDTH
                 self.big_enemy.rect.y = self.big_enemy.rect.y = randint(
                     0, HEIGHT)
 
         if pg.Rect.colliderect(self.small_enemy.rect, self.space_ship.rect):
-            self.make_explosion()
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
             self.space_ship.hit_hull()
             self.space_ship.hull_damage.ckeck_gameover_condition()
 
             if not self.space_ship.hull_damage.destroyed:
-                self.make_explosion()
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
                 self.small_enemy.rect.x = WIDTH
                 self.small_enemy.rect.y = self.small_enemy.rect.y = randint(
                     0, HEIGHT)
@@ -557,6 +603,10 @@ class Game2(Scene):
             # dibuja explosion
             self.explosion_group.draw(self.display)
             self.explosion_group.update()
+
+            # dibuja golpes a la nave
+            self.hit_group.draw(self.display)
+            self.hit_group.update()
 
             # dibuja los puntos ganados
             self.score.draw(self.display)

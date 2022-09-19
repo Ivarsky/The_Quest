@@ -354,7 +354,7 @@ class Hit(Sprite):
         self.sprites = []
         for i in range(4):
             self.sprites.append(pg.transform.scale2x(pg.image.load(
-                os.path.join("resources", "hit", "sprites", f"hit{i}.png"))))
+                os.path.join("resources", "Hit", "sprites", f"hit{i}.png"))))
         self.next_image = 0
         self.image = self.sprites[self.next_image]
         self.rect = self.image.get_rect(x=pos_x, y=pos_y)
