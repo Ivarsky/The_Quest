@@ -390,6 +390,7 @@ class InputBox():
             x_background, y_background, w_background, h_background)
 
     def draw(self):
+        # pequeño recuadro aparte para ir repintandolo
         pg.draw.rect(self.display, self.background_color, self.background)
         self.display.blit(self.title, (self.x_title, self.y_title))
 
