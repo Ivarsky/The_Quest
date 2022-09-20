@@ -91,6 +91,7 @@ class DBManager:
         connection.close()
 
     def reset(self):
+        # ATENCION!, limpia toda la base de datos, borra TODO, ATENCION!
         query = "DELETE FROM records"
         connection = sqlite3.connect(self.route)
         cursor = connection.cursor()

@@ -41,6 +41,7 @@ class HullPoints:
         pos_y = LATERAL_MARGIN
         pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
 
+    # el mismo marcador de daño a la nave marca el mensaje de game over
         if self.destroyed == True:
             text = pg.font.Font.render(
                 self.typography_endgame, "Game Over", True, C_RED)
@@ -303,7 +304,6 @@ class EndGame2Texts:
         pg.font.init()
         font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
         self.typography = pg.font.Font(font_file, 18)
-        self.score = Scoreboard2()
 
     def draw_text1(self, screen, points: int):
         text1 = pg.font.Font.render(

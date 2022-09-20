@@ -636,6 +636,7 @@ class Game2(Scene):
                 self.small_asteroid.update()
                 self.big_enemy.update(self.game1)
                 self.small_enemy.update(self.game1)
+                # TODO: otro enemigo mas
 
                 if self.score.win == False:
                     self.collide()
