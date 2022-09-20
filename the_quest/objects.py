@@ -208,6 +208,37 @@ class SmallAlienShip(Sprite):
             self.iteration = 0
 
 
+class Shot(Sprite):
+
+    fps_animation = 12
+    limit_iteration = FPS / fps_animation
+    iteration = 0
+
+    def __init__(self):
+        super().__init__()
+        self.sprites = []
+        for i in range(1):
+            self.sprites.append(pg.image.load(
+                os.path.join("resources", "shoot", f"shoot{i}.png")))
+
+        self.next_image = 0
+        self.image = self.sprites[self.next_image]
+        self.x = WIDTH
+        self.y = randint(0, HEIGHT)
+        self.rect = self.image.get_rect(x=self.x, y=self.y)
+        self.speed_shoot = ASTEROID_SPEED * 5
+
+    def update(self):
+        self.rect.x = self.rect.x - self.speed_shoot
+        self.iteration += 1
+        if self.iteration == self.limit_iteration:
+            self.next_image += 1
+            if self.next_image >= len(self.sprites):
+                self.next_image = 0
+            self.image = self.sprites[self.next_image]
+            self.iteration = 0
+
+
 class Scoreboard1:
     """
     guarda la puntuacion y la pinta
@@ -247,7 +278,7 @@ class Scoreboard1:
             text = pg.font.Font.render(
                 self.typography_endgame, "Bien hecho! abandonamos el sistema solar!", True, C_YELLOW)
             text1 = pg.font.Font.render(
-                self.typography_endgame, "Ahora emprenderemos nuestro largo viaje, Nova Terra nos espera!", True, C_YELLOW)
+                self.typography_endgame, "Ahora emprenderemos nuestro largo viaje!", True, C_YELLOW)
             text2 = pg.font.Font.render(
                 self.typography_endgame, "Espacio para continuar", True, C_YELLOW)
             text3 = pg.font.Font.render(

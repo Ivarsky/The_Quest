@@ -5,7 +5,7 @@ import os
 import pygame as pg
 
 from . import *
-from .objects import BigAlienShip, BigAsteroid, EndGame2Texts, Explosion, Hit, InputBox, Planet, Scoreboard1, Scoreboard2, SmallAlienShip, SmallAsteroid, SpaceShip
+from .objects import BigAlienShip, BigAsteroid, EndGame2Texts, Explosion, Hit, InputBox, Planet, Scoreboard1, Scoreboard2, Shot, SmallAlienShip, SmallAsteroid, SpaceShip
 from .records import DBManager
 
 
@@ -123,7 +123,7 @@ class Story(Scene):
 
     def draw_text1(self):
         typography = pg.font.Font(self.font_file, 18)
-        message = "y con ella viajaremos hacia otro mundo donde podremos prosperar"
+        message = "En nuestro camino encontraremos muchos obstaculos y enemigos alienigenas"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
@@ -400,7 +400,7 @@ class Story2(Scene):
 
     def draw_text0(self):
         typography = pg.font.Font(self.font_file, 18)
-        message = "Por fin hemos llegado a nuestro nuevo sol y nos aproximamos a Nova Terra!"
+        message = "Por fin hemos llegado a nuestro nuevo sol y nos aproximamos a nuestro nuevo hogar!"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
@@ -418,7 +418,7 @@ class Story2(Scene):
 
     def draw_text2(self):
         typography = pg.font.Font(self.font_file, 18)
-        message = "Unas naves vienen hacia nosotros, ¡Son alienigenas!"
+        message = "Unas naves vienen hacia nosotros ¡Son los aliens! y están mas cabreados...¡Nos disparan!"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
@@ -457,6 +457,7 @@ class Game2(Scene):
         self.score = Scoreboard2()
         self.planet = Planet()
         self.endgame_text = EndGame2Texts()
+        self.shot = Shot()
 
         self.explosion_group = pg.sprite.Group()
         self.hit_group = pg.sprite.Group()
@@ -514,6 +515,7 @@ class Game2(Scene):
                 self.small_asteroid.rect.y = self.small_asteroid.rect.y = randint(
                     0, HEIGHT)
 
+        # colision con alien grande
         if pg.Rect.colliderect(self.big_enemy.rect, self.space_ship.rect):
             if self.space_ship.hull_damage.points < 3:
                 self.make_hit()
@@ -531,6 +533,7 @@ class Game2(Scene):
                 self.big_enemy.rect.y = self.big_enemy.rect.y = randint(
                     0, HEIGHT)
 
+        # colision con alien pequeño
         if pg.Rect.colliderect(self.small_enemy.rect, self.space_ship.rect):
             if self.space_ship.hull_damage.points < 3:
                 self.make_hit()
@@ -546,6 +549,23 @@ class Game2(Scene):
                     self.make_explosion()
                 self.small_enemy.rect.x = WIDTH
                 self.small_enemy.rect.y = self.small_enemy.rect.y = randint(
+                    0, HEIGHT)
+        # colision con disparo
+        if pg.Rect.colliderect(self.shot.rect, self.space_ship.rect):
+            if self.space_ship.hull_damage.points < 3:
+                self.make_hit()
+            else:
+                self.make_explosion()
+            self.space_ship.hit_hull()
+            self.space_ship.hull_damage.ckeck_gameover_condition()
+
+            if not self.space_ship.hull_damage.destroyed:
+                if self.space_ship.hull_damage.points < 3:
+                    self.make_hit()
+                else:
+                    self.make_explosion()
+                self.shot.rect.x = WIDTH
+                self.shot.rect.y = self.small_enemy.rect.y = randint(
                     0, HEIGHT)
 
     def reset_and_score(self):
@@ -578,6 +598,13 @@ class Game2(Scene):
                 self.small_enemy.rect.x = WIDTH
                 self.small_enemy.rect.y = randint(0, HEIGHT)
 
+        if self.shot.rect.x <= 1:
+            self.score.add_score()
+            self.score.check_win_condition()
+            if self.shot.rect.x <= 0:
+                self.shot.rect.x = WIDTH
+                self.shot.rect.y = randint(0, HEIGHT)
+
     def stop_obstacles_if_destroid(self):
         self.big_asteroid.rect.x = WIDTH
         self.big_asteroid.rect.y = randint(0, HEIGHT)
@@ -587,6 +614,8 @@ class Game2(Scene):
         self.big_enemy.rect.y = randint(0, HEIGHT)
         self.small_enemy.rect.x = WIDTH
         self.small_enemy.rect.y = randint(0, HEIGHT)
+        self.shot.rect.x = WIDTH
+        self.shot.rect.y = randint(0, HEIGHT)
 
     def ship_landing(self):
         self.space_ship.rot_center()
@@ -601,10 +630,6 @@ class Game2(Scene):
 
     def calculate_points(self):
         self.gamepoints = self.score.points - self.space_ship.hull_damage.points
-
-    # def save_gamepoints_and_hits(self):
-        #self.gamepoints += self.score.points
-        #self.gamehits += self.space_ship.hull_damage.points
 
     def main_loop(self):
         print("Starting game!")
@@ -636,6 +661,7 @@ class Game2(Scene):
                 self.small_asteroid.update()
                 self.big_enemy.update(self.game1)
                 self.small_enemy.update(self.game1)
+                self.shot.update()
                 # TODO: otro enemigo mas
 
                 if self.score.win == False:
@@ -660,6 +686,7 @@ class Game2(Scene):
                               self.small_asteroid.rect)
             self.display.blit(self.big_enemy.image, self.big_enemy.rect)
             self.display.blit(self.small_enemy.image, self.small_enemy.rect)
+            self.display.blit(self.shot.image, self.shot.rect)
 
             # dibuja explosion
             self.explosion_group.draw(self.display)
