@@ -21,6 +21,7 @@ class HullPoints:
         font_file = os.path.join("resources", "fonts", "PublicPixel-z84yD.ttf")
         self.typography = pg.font.Font(font_file, 50)
         self.typography_endgame = pg.font.Font(font_file, 100)
+        self.typography_small = pg.font.Font(font_file, 18)
 
     def ckeck_gameover_condition(self):
         if self.points == MAX_HULL_HITPOINTS:
@@ -45,9 +46,15 @@ class HullPoints:
         if self.destroyed == True:
             text = pg.font.Font.render(
                 self.typography_endgame, "Game Over", True, C_RED)
+            text1 = pg.font.Font.render(
+                self.typography_small, "R para Reiniciar, Esc para salir", True, C_YELLOW)
+
             pos_x = (WIDTH - text.get_width())/2
             pos_y = (HEIGHT - text.get_height())/2
+            pos_x1 = (WIDTH - text1.get_width())/2
+            pos_y1 = pos_y + 250
             pg.surface.Surface.blit(screen, text, (pos_x, pos_y))
+            pg.surface.Surface.blit(screen, text1, (pos_x1, pos_y1))
 
 
 class SpaceShip(Sprite):
