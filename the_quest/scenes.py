@@ -662,7 +662,6 @@ class Game2(Scene):
                 self.big_enemy.update(self.game1)
                 self.small_enemy.update(self.game1)
                 self.shot.update()
-                # TODO: otro enemigo mas
 
                 if self.score.win == False:
                     self.collide()
@@ -827,3 +826,4 @@ class HallOfFame(Scene):
 
             pg.display.flip()
             self.clock.tick(FPS)
+    # TODO: que se pueda reiniciar juego totalmente o salir, con mensajes

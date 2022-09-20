@@ -252,7 +252,7 @@ class Scoreboard1:
         self.typography_endgame = pg.font.Font(font_file, 18)
 
     def check_win_condition(self):
-        if self.points == WIN_SCORE:
+        if self.points == WIN_SCORE_GAME1:
             self.win = True
             print("WIN!")
 
@@ -314,7 +314,7 @@ class Scoreboard2:
         self.typography_endgame = pg.font.Font(font_file, 18)
 
     def check_win_condition(self):
-        if self.points == WIN_SCORE:
+        if self.points == WIN_SCORE_GAME2:
             self.win = True
             print("WIN!")
 
