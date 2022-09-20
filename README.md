@@ -99,6 +99,6 @@ LinkTree: https://linktr.ee/ansimuz
 ## Fuente tipografía
 Public Pixel Font, fuente bajo licencia Creative Commons Zero v1.0 Universal.
 
-Más información:
+### Más información:
 
 https://www.ggbot.net/fonts
