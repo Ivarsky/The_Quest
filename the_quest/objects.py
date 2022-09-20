@@ -5,7 +5,6 @@ import pygame as pg
 from pygame.sprite import Sprite
 
 from . import *
-from .records import DBManager
 
 from random import randint
 

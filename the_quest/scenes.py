@@ -32,11 +32,12 @@ class Front(Scene):
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    #    if event.key == pg.K_ESCAPE:
-                    #        print("Exiting")
-                    #        return
+                    if event.key == pg.K_ESCAPE:
+                        print("Exiting")
+                        return
                     if event.key == pg.K_SPACE:
                         return
+
                 if event.type == pg.QUIT:
                     print("Exiting!")
                     pg.quit()
@@ -52,6 +53,7 @@ class Front(Scene):
         self.display.blit(self.background, (0, 0))
 
     def draw_title(self):
+        # Título del juego
         typography = pg.font.Font(self.font_file, 100)
         message = "The Quest"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -61,6 +63,7 @@ class Front(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text1(self):
+        # Instrucciones del juego
         typography = pg.font.Font(self.font_file, 16)
         message = "¡Usa flecha arriba y abajo para esquivar los obstáculos!"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -70,8 +73,9 @@ class Front(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text2(self):
+        # Texto indicativo
         typography = pg.font.Font(self.font_file, 16)
-        message = "Pulsa Espacio para empezar a jugar"
+        message = "Pulsa Espacio para empezar a jugar, ESC para salir, R si quieres reiniciar partida"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
@@ -93,9 +97,9 @@ class Story(Scene):
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    #    if event.key == pg.K_ESCAPE:
-                    #        print("Exiting")
-                    #        return
+                    if event.key == pg.K_ESCAPE:
+                        print("Exiting")
+                        return
                     if event.key == pg.K_SPACE:
                         return None
                 if event.type == pg.QUIT:
@@ -103,7 +107,7 @@ class Story(Scene):
                     pg.quit()
 
             self.draw_background()
-            self.draw_title()
+            self.draw_text()
             self.draw_text1()
             self.draw_text2()
             pg.display.flip()
@@ -112,7 +116,8 @@ class Story(Scene):
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
 
-    def draw_title(self):
+    def draw_text(self):
+        # Historia
         typography = pg.font.Font(self.font_file, 18)
         message = "La Tierra es inhabitable y debemos abandonarla, para ello hemos construido una nave"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -122,6 +127,7 @@ class Story(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text1(self):
+        # Historia
         typography = pg.font.Font(self.font_file, 18)
         message = "En nuestro camino encontraremos muchos obstaculos y enemigos alienigenas"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -131,8 +137,9 @@ class Story(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text2(self):
+        # Texto indicativo
         typography = pg.font.Font(self.font_file, 16)
-        message = "Pulsa Espacio para empezar"
+        message = "Pulsa Espacio para empezar, ESC para salir"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
@@ -162,14 +169,17 @@ class Game1(Scene):
         self.display.blit(self.background, (0, 0))
 
     def make_explosion(self):
+        # animación explosion
         explosion = Explosion(self.space_ship.rect.x, self.space_ship.rect.y)
         self.explosion_group.add(explosion)
 
     def make_hit(self):
+        # animación de golpe
         hit = Hit(self.space_ship.rect.x, self.space_ship.rect.y)
         self.hit_group.add(hit)
 
     def collide(self):
+        # Funcion para detectar colisiones entre obstáculos y naves
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
         """
@@ -209,6 +219,7 @@ class Game1(Scene):
                     0, HEIGHT)
 
         if pg.Rect.colliderect(self.big_enemy.rect, self.space_ship.rect):
+            # colisión entre alien grande y nave
             if self.space_ship.hull_damage.points < 3:
                 self.make_hit()
             else:
@@ -226,6 +237,7 @@ class Game1(Scene):
                     0, HEIGHT)
 
         if pg.Rect.colliderect(self.small_enemy.rect, self.space_ship.rect):
+            # colision entre alien pequeño y nave
             if self.space_ship.hull_damage.points < 3:
                 self.make_hit()
             else:
@@ -243,6 +255,7 @@ class Game1(Scene):
                     0, HEIGHT)
 
     def reset_and_score(self):
+        # resetea la posición de los obstáculos al salir de la pantalla y añade puntuación
         if self.big_asteroid.rect.x <= 1:
             self.score.add_score()
             self.score.check_win_condition()
@@ -273,6 +286,7 @@ class Game1(Scene):
                 self.small_enemy.rect.y = randint(0, HEIGHT)
 
     def stop_obstacles_if_destroid(self):
+        # para la generación de obstáculos
         self.big_asteroid.rect.x = WIDTH
         self.big_asteroid.rect.y = randint(0, HEIGHT)
         self.small_asteroid.rect.x = WIDTH
@@ -283,6 +297,7 @@ class Game1(Scene):
         self.small_enemy.rect.y = randint(0, HEIGHT)
 
     def save_gamepoints_and_hits(self):
+        # calcula los puntos de la partida, restando los golpes con la nave a los obstaculos
         self.gamepoints = self.score.points - self.space_ship.hull_damage.points
 
     def main_loop(self):
@@ -291,9 +306,9 @@ class Game1(Scene):
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    #    if event.key == pg.K_ESCAPE:
-                    #        print("Exiting")
-                    #        return
+                    if event.key == pg.K_ESCAPE:
+                        print("Exiting")
+                        return
                     if event.key == pg.K_SPACE:
                         # if self.score.win == True:
                         return self.gamepoints
@@ -375,9 +390,9 @@ class Story2(Scene):
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    #    if event.key == pg.K_ESCAPE:
-                    #        print("Exiting")
-                    #        return
+                    if event.key == pg.K_ESCAPE:
+                        print("Exiting")
+                        return
                     if event.key == pg.K_SPACE:
                         return None
                 if event.type == pg.QUIT:
@@ -399,6 +414,7 @@ class Story2(Scene):
         self.display.blit(self.background_stars, (0, 0))
 
     def draw_text0(self):
+        # Historia
         typography = pg.font.Font(self.font_file, 18)
         message = "Por fin hemos llegado a nuestro nuevo sol y nos aproximamos a nuestro nuevo hogar!"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -408,6 +424,7 @@ class Story2(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text1(self):
+        # Historia
         typography = pg.font.Font(self.font_file, 18)
         message = "Tenemos un campo de asteroides enfrente y ... ESPERA!"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -417,6 +434,7 @@ class Story2(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text2(self):
+        # Historia
         typography = pg.font.Font(self.font_file, 18)
         message = "Unas naves vienen hacia nosotros ¡Son los aliens! y están mas cabreados...¡Nos disparan!"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
@@ -426,8 +444,9 @@ class Story2(Scene):
         self.display.blit(text, (pos_x, pos_y))
 
     def draw_text3(self):
+        # Texto indicativo
         typography = pg.font.Font(self.font_file, 16)
-        message = "Pulsa Espacio para empezar"
+        message = "Pulsa Espacio para empezar, ESC para Salir"
         text = pg.font.Font.render(typography, message, True, C_YELLOW)
         text_width = text.get_width()
         pos_x = (WIDTH-text_width)/2
@@ -469,14 +488,17 @@ class Game2(Scene):
         self.display.blit(self.background_stars, (0, 0))
 
     def make_explosion(self):
+        # animacion de explosión
         explosion = Explosion(self.space_ship.rect.x, self.space_ship.rect.y)
         self.explosion_group.add(explosion)
 
     def make_hit(self):
+        # animación de golpe
         hit = Hit(self.space_ship.rect.x, self.space_ship.rect.y)
         self.hit_group.add(hit)
 
     def collide(self):
+        # Detecta colision entre obstáculos y nave
         """
         Comprueba si el asteroide colisiona con la nave, resetea la posición del asteroide y resta un punto de vida
         """
@@ -569,6 +591,7 @@ class Game2(Scene):
                     0, HEIGHT)
 
     def reset_and_score(self):
+        # resgenera los obstáculos y marca puntuación
         if self.big_asteroid.rect.x <= 1:
             self.score.add_score()
             self.score.check_win_condition()
@@ -606,6 +629,7 @@ class Game2(Scene):
                 self.shot.rect.y = randint(0, HEIGHT)
 
     def stop_obstacles_if_destroid(self):
+        # para la generacion de obstáculos si la nave se destruye
         self.big_asteroid.rect.x = WIDTH
         self.big_asteroid.rect.y = randint(0, HEIGHT)
         self.small_asteroid.rect.x = WIDTH
@@ -618,6 +642,7 @@ class Game2(Scene):
         self.shot.rect.y = randint(0, HEIGHT)
 
     def ship_landing(self):
+        # empieza el evento de aterrizaje
         self.space_ship.rot_center()
         if self.space_ship.rect.y > HEIGHT/2:
             self.space_ship.rect.y -= self.space_ship.speed
@@ -629,6 +654,7 @@ class Game2(Scene):
             self.landing_complete = True
 
     def calculate_points(self):
+        # Calcula la puntuación restando los golpes a la nave con los obstáculos esquivados
         self.gamepoints = self.score.points - self.space_ship.hull_damage.points
 
     def main_loop(self):
@@ -637,9 +663,9 @@ class Game2(Scene):
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    #    if event.key == pg.K_ESCAPE:
-                    #        print("Exiting")
-                    #        return
+                    if event.key == pg.K_ESCAPE:
+                        print("Exiting")
+                        return
                     if event.key == pg.K_SPACE:
                         if self.score.win == True and self.landing_complete == True:
                             return self.gamepoints
@@ -650,10 +676,6 @@ class Game2(Scene):
                 if event.type == pg.QUIT:
                     print("Exiting")
                     pg.quit()
-
-            # si se gana guarda puntos
-            # if self.score.win == True:
-                # self.save_gamepoints_and_hits()
 
             # mueve obstaculos y comprueba si chocan con la nave
             if self.space_ship.hull_damage.destroyed == False:
@@ -711,7 +733,7 @@ class Game2(Scene):
             # aterrizaje de la nave
             if self.planet.planet_in_position == True:
                 self.ship_landing()
-
+            # si se completa la animación de aterrizaje aparece un texto de historia
             if self.landing_complete == True:
                 self.endgame_text.draw_text2(self.display)
 
@@ -742,7 +764,17 @@ class HallOfFame(Scene):
     def draw_background(self):
         self.display.blit(self.background, (0, 0))
 
+    def draw_text(self):
+        text = pg.font.Font.render(
+            self.typography_records, "¡Pulsa ESC para salir, Adios!", True, C_YELLOW)
+
+        pos_x1 = (WIDTH - text.get_width())/2
+        pos_y1 = HEIGHT * 0.75
+
+        pg.surface.Surface.blit(self.display, text, (pos_x1, pos_y1))
+
     def load(self):
+        # carga records desde la base de datos
         self.records = self.database.load()
         for record in self.records:
             record.pop("id")
@@ -783,6 +815,7 @@ class HallOfFame(Scene):
             self.display.blit(points[b], (pos_x1, pos_y1))
 
     def check_if_top10(self):
+        # comprueba si la puntuacion alcanzada esta en el top 10 de récords
         lowest = self.database.lowest_top10_score()
         # puede entrar un 0 desde la funcion de database, dejando entrar cualquier puntuacion
         if self.total_gamepoints > lowest:
@@ -809,21 +842,27 @@ class HallOfFame(Scene):
                 str(score), True, C_YELLOW)
             self.points_render.append(rendertext2)
             pass
+
         while True:
             for event in pg.event.get():
-                # if event.type == pg.KEYDOWN:
-                #    if event.key == pg.K_ESCAPE:
-                #        print("Exiting")
-                #        return
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        print("Exiting")
+                        return
+                    if event.key == pg.K_SPACE:
+                        return
+
                 if event.type == pg.QUIT:
                     print("Exiting")
                     pg.quit()
             self.display.fill(C_BLUE)
             self.draw_background()
 
+            # Pinta los récords
             self.draw_records(self.names_render,
                               self.points_render, rendertext, rendertext2)
 
+            self.draw_text()
+
             pg.display.flip()
             self.clock.tick(FPS)
-    # TODO: que se pueda reiniciar juego totalmente o salir, con mensajes
