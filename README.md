@@ -87,11 +87,18 @@ code .
 ```
 
 # Atribuciones
-
+## Artwork
 El Artwork ha sido creado por Luis Zuno (@ansimuz)
 
-## Links a sus redes
+### Links a sus redes
 
 Twitter: https://twitter.com/ansimuz
 
 LinkTree: https://linktr.ee/ansimuz
+
+## Fuente tipografía
+Public Pixel Font, fuente bajo licencia Creative Commons Zero v1.0 Universal.
+
+Más información:
+
+https://www.ggbot.net/fonts
